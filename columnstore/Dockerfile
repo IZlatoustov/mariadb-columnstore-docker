@@ -23,6 +23,12 @@ COPY service /etc/service/
 COPY runit_bootstrap /usr/sbin/
 COPY dbinit /usr/sbin/
 
+
+COPY bookstore /tmp/bookstore
+RUN chmod 755 /tmp/bookstore/init.sh
+RUN sed -i 's/%CSV%/\/tmp\/bookstore\/csv\//g' /tmp/bookstore/sql/load.sql
+RUN sed -i 's/%DB%/bookstore/g' /tmp/bookstore/sql/load.sql
+
 RUN chmod 755 /etc/service/*/run /etc/service/*/finish /usr/sbin/runit_bootstrap && \
     mkdir -p /var/log/mariadb/columnstore && \
     mkdir /docker-entrypoint-initdb.d && \
