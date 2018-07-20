@@ -7,19 +7,21 @@ coverprice DOUBLE(18,2) NOT NULL,
 isbn VARCHAR(255) NOT NULL,
 bookname VARCHAR(255) NOT NULL,
 category VARCHAR(255) NOT NULL, 
-discount DOUBLE(18,2) NOT NULL) Engine = columnstore;
+discount DOUBLE(18,2) NOT NULL,  
+PRIMARY KEY(id)) Engine = INNODB;
 
 
 DROP TABLE IF EXISTS  %DB%.Covers;
 CREATE TABLE %DB%.Covers ( 
 id INTEGER NOT NULL, 
-image LONGBLOB NOT NULL) Engine = columnstore;
+image LONGBLOB NOT NULL,
+PRIMARY KEY(id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.TransactionTypes;
 CREATE TABLE %DB%.TransactionTypes ( 
 id BIGINT UNSIGNED NOT NULL, 
 tr_type VARCHAR(50) NOT NULL,
-PRIMARY KEY(id)) Engine = InnoDB;
+PRIMARY KEY(id)) Engine = INNODB;
 
 
 DROP TABLE IF EXISTS  %DB%.Cards;
@@ -29,26 +31,30 @@ customer_id BIGINT UNSIGNED NOT NULL,
 card_nm VARCHAR(255) NOT NULL,
 card_type VARCHAR(255) NOT NULL,
 discount VARCHAR(255) NOT NULL, 
-points DOUBLE(18,2) NOT NULL) Engine = columnstore;
+points DOUBLE(18,2) NOT NULL,  
+PRIMARY KEY(card_id)) Engine = INNODB;
 
 
 DROP TABLE IF EXISTS  %DB%.Emails;
 CREATE TABLE %DB%.Emails ( 
 email_id BIGINT UNSIGNED NOT NULL,
 customer_id BIGINT UNSIGNED NOT NULL, 
-email_adr VARCHAR(255) NOT NULL) Engine = columnstore;
+email_adr VARCHAR(255) NOT NULL,
+PRIMARY KEY(email_id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.Phones;
 CREATE TABLE %DB%.Phones ( 
 phone_id BIGINT UNSIGNED NOT NULL,
 customer_id BIGINT UNSIGNED NOT NULL, 
-phone_nm VARCHAR(255) NOT NULL) Engine = columnstore;
+phone_nm VARCHAR(255) NOT NULL,
+PRIMARY KEY(phone_id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.Addresses;
 CREATE TABLE %DB%.Addresses ( 
 address_id BIGINT UNSIGNED NOT NULL,
 customer_id BIGINT UNSIGNED NOT NULL, 
-address VARCHAR(255) NOT NULL) Engine = columnstore;
+address VARCHAR(255) NOT NULL,
+PRIMARY KEY(address_id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.Transactions;
 CREATE TABLE %DB%.Transactions ( 
@@ -59,7 +65,8 @@ price DOUBLE(18,2) NOT NULL,
 discount DOUBLE(18,2) NOT NULL, 
 discounted_price DOUBLE(18,2) NOT NULL, 
 transaction_type INTEGER NOT NULL,
-customer_id BIGINT UNSIGNED NOT NULL) Engine = columnstore;
+customer_id BIGINT UNSIGNED NOT NULL,
+PRIMARY KEY(transaction_id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.LoyaltyPoints;
 CREATE TABLE %DB%.LoyaltyPoints ( 
@@ -67,7 +74,11 @@ trans_date DATETIME NOT NULL,
 order_id BIGINT UNSIGNED NOT NULL,
 card_is BIGINT UNSIGNED NOT NULL,
 points INTEGER NOT NULL, 
-customer_id BIGINT UNSIGNED NOT NULL) Engine = columnstore;
+customer_id BIGINT UNSIGNED NOT NULL,
+PRIMARY KEY(order_id)) Engine = INNODB;
+
+SELECT SLEEP(2) as '';
+SELECT 'Schema created.' as '';
 
 LOAD DATA LOCAL INFILE '%CSV%books.csv'
 INTO TABLE %DB%.Books
@@ -77,13 +88,7 @@ TERMINATED BY ','
 ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
-LOAD DATA LOCAL INFILE '%CSV%covers.csv'
-INTO TABLE %DB%.Covers
-CHARACTER
-SET UTF8 FIELDS
-TERMINATED BY ','
-ENCLOSED BY ''''
-ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Books') as '' FROM %DB%.Books;
 
 LOAD DATA LOCAL INFILE '%CSV%cards.csv'
 INTO TABLE %DB%.Cards
@@ -93,6 +98,8 @@ TERMINATED BY ','
 ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Cards') as '' FROM %DB%.Cards;
+
 LOAD DATA LOCAL INFILE '%CSV%emails.csv'
 INTO TABLE %DB%.Emails
 CHARACTER
@@ -100,6 +107,8 @@ SET UTF8 FIELDS
 TERMINATED BY ','
 ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
+
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Emails') as '' FROM %DB%.Emails;
 
 LOAD DATA LOCAL INFILE '%CSV%phones.csv'
 INTO TABLE %DB%.Phones
@@ -109,6 +118,8 @@ TERMINATED BY ','
 ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Phones') as '' FROM %DB%.Phones;
+
 LOAD DATA LOCAL INFILE '%CSV%addresses.csv'
 INTO TABLE %DB%.Addresses
 CHARACTER
@@ -116,6 +127,8 @@ SET UTF8 FIELDS
 TERMINATED BY ','
 ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
+
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Addresses') as '' FROM %DB%.Addresses;
 
 LOAD DATA LOCAL INFILE '%CSV%transactions.csv'
 INTO TABLE %DB%.Transactions
@@ -125,6 +138,8 @@ TERMINATED BY ','
 OPTIONALLY ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Transactions') as '' FROM %DB%.Transactions;
+
 LOAD DATA LOCAL INFILE '%CSV%loaylty_points.csv'
 INTO TABLE %DB%.LoyaltyPoints
 CHARACTER
@@ -133,15 +148,19 @@ TERMINATED BY ','
 ENCLOSED BY ''''
 ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in LoyaltyPoints') as '' FROM %DB%.LoyaltyPoints;
 
+LOAD DATA LOCAL INFILE '%CSV%covers.csv'
+INTO TABLE %DB%.Covers
+CHARACTER
+SET UTF8 FIELDS
+TERMINATED BY ','
+ENCLOSED BY ''''
+ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
+
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Covers') as '' FROM %DB%.Covers;
 
 INSERT INTO %DB%.TransactionTypes (id,tr_type) VALUES (1,'Item'), (2,'Discount'),(3,'Shipping');
 
-SELECT CONCAT('Loaded ',COUNT(*),' in Books') as '' FROM %DB%.Books;
-SELECT CONCAT('Loaded ',COUNT(*),' in Covers') as '' FROM %DB%.Covers;
-SELECT CONCAT('Loaded ',COUNT(*),' in Cards') as '' FROM %DB%.Cards;
-SELECT CONCAT('Loaded ',COUNT(*),' in Emails') as '' FROM %DB%.Emails;
-SELECT CONCAT('Loaded ',COUNT(*),' in Phones') as '' FROM %DB%.Phones;
-SELECT CONCAT('Loaded ',COUNT(*),' in Addresses') as '' FROM %DB%.Addresses;
-SELECT CONCAT('Loaded ',COUNT(*),' in Transactions') as '' FROM %DB%.Transactions;
-SELECT CONCAT('Loaded ',COUNT(*),' in LoyaltyPoints') as '' FROM %DB%.LoyaltyPoints;
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in TransactionTypes') as '' FROM %DB%.TransactionTypes;
+

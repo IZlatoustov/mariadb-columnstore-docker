@@ -8,7 +8,7 @@ if [ "$1" = "multinode" ]; then
     cp /usr/local/mariadb/columnstore/etc/Columnstore.xml.installSave  /usr/local/mariadb/columnstore/etc/Columnstore.xml
   fi
 fi
-echo "Starting services"
-/usr/sbin/runsvdir-start ./runsvdir.log &
 echo "Loading bookstore data."
 /tmp/bookstore/init.sh &
+echo "Starting services"
+/usr/sbin/runsvdir-start

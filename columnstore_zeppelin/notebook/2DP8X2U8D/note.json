@@ -1,0 +1,245 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n## JDBC API Write Benchmark\nImport needed packets and set connections up",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-25 18:05:38.559",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eJDBC API Write Benchmark\u003c/h2\u003e\n\u003cp\u003eImport needed packets and set connections up\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1532518385940_955654848",
+      "id": "20180724-154057_1976865111",
+      "dateCreated": "2018-07-25 11:33:05.940",
+      "dateStarted": "2018-07-25 18:05:38.618",
+      "dateFinished": "2018-07-25 18:05:38.636",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.sql.{SparkSession,DataFrame}\nimport com.mariadb.columnstore.api.ColumnStoreDriver\nimport com.mariadb.columnstore.api.connector.ColumnStoreExporter",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-25 18:05:38.718",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.{SparkSession, DataFrame}\nimport com.mariadb.columnstore.api.ColumnStoreDriver\nimport com.mariadb.columnstore.api.connector.ColumnStoreExporter\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1532521347781_-92368366",
+      "id": "20180725-122227_348688645",
+      "dateCreated": "2018-07-25 12:22:27.781",
+      "dateStarted": "2018-07-25 18:05:38.744",
+      "dateFinished": "2018-07-25 18:05:39.743",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import com.mariadb.columnstore.api.ColumnStoreDriver\nimport com.mariadb.columnstore.api.connector.ColumnStoreExporter\nimport java.util.Properties\nimport org.apache.spark.sql.{SQLContext,DataFrame}\nimport org.apache.spark.sql.functions.{rand, randn, sha1, sha2, md5}\nimport java.sql.{DriverManager,Connection,Date,Timestamp,PreparedStatement,ResultSet,SQLException}\n\nval url \u003d \"jdbc:mysql://columnstore:3306\"\n\nvar connectionProperties \u003d new Properties()\nconnectionProperties.put(\"user\", \"root\")\nconnectionProperties.put(\"driver\", \"org.mariadb.jdbc.Driver\")\n\nval sqlContext \u003d new SQLContext(sc)\nimport sqlContext.implicits._\n\n// SampleDataframe size parameter:\nval asciiRange \u003d 128\nval randRange \u003d 1000\nval hashRange \u003d 1000",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-25 18:05:39.760",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import com.mariadb.columnstore.api.ColumnStoreDriver\nimport com.mariadb.columnstore.api.connector.ColumnStoreExporter\nimport java.util.Properties\nimport org.apache.spark.sql.{SQLContext, DataFrame}\nimport org.apache.spark.sql.functions.{rand, randn, sha1, sha2, md5}\nimport java.sql.{DriverManager, Connection, Date, Timestamp, PreparedStatement, ResultSet, SQLException}\nurl: String \u003d jdbc:mysql://columnstore:3306\nconnectionProperties: java.util.Properties \u003d {}\nres29: Object \u003d null\nres30: Object \u003d null\nwarning: there was one deprecation warning; re-run with -deprecation for details\nsqlContext: org.apache.spark.sql.SQLContext \u003d org.apache.spark.sql.SQLContext@3a2a2e1a\nimport sqlContext.implicits._\nasciiRange: Int \u003d 128\nrandRange: Int \u003d 1000\nhashRange: Int \u003d 1000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1532518385943_-2008194264",
+      "id": "20180724-154135_937012168",
+      "dateCreated": "2018-07-25 11:33:05.943",
+      "dateStarted": "2018-07-25 18:05:39.801",
+      "dateFinished": "2018-07-25 18:05:43.703",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nPrepare database",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-25 18:05:43.720",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003ePrepare database\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1532518385944_-1362367209",
+      "id": "20180724-154204_590917616",
+      "dateCreated": "2018-07-25 11:33:05.944",
+      "dateStarted": "2018-07-25 18:05:43.760",
+      "dateFinished": "2018-07-25 18:05:43.784",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "var connection: Connection \u003d null\ntry {\n      connection \u003d DriverManager.getConnection(url, connectionProperties)\n      val statement \u003d connection.createStatement\n      statement.executeQuery(\"\"\"DROP DATABASE IF EXISTS benchmark\"\"\")\n      statement.executeQuery(\"\"\"CREATE DATABASE IF NOT EXISTS benchmark\"\"\")\n    } catch {\n      case e: Exception \u003d\u003e e.printStackTrace()\n    } finally {\n      connection.close()\n    }",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-25 18:05:43.855",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "connection: java.sql.Connection \u003d null\nres33: Any \u003d org.mariadb.jdbc.internal.com.read.resultset.SelectResultSet@72587978\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1532518385945_-40375672",
+      "id": "20180724-154755_2000804815",
+      "dateCreated": "2018-07-25 11:33:05.945",
+      "dateStarted": "2018-07-25 18:05:43.885",
+      "dateFinished": "2018-07-25 18:05:45.046",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "dateUpdated": "2018-07-25 18:05:45.088",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1532518385945_-1849398815",
+      "id": "20180724-154801_1810071057",
+      "dateCreated": "2018-07-25 11:33:05.945",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Scala JDBC API Benchmark",
+  "id": "2DP8X2U8D",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

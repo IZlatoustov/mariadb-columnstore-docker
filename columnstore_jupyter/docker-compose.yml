@@ -4,14 +4,23 @@ services:
   jupyter:
     image: mariadb/columnstore_jupyter:latest
     command: start-notebook.sh --NotebookApp.password='sha1:817af87d3fe5:febd7d6959b12ee6839a26d56f8f54c88922e9c2' 
-    hostname: jupyter
     ports:
       - "8888:8888"
     volumes:
       - ./notebooks:/home/jovyan/work
   columnstore:
-    image: mariadb/columnstore_singlenode:latest
+    hostname: columnstore
+    build: ../columnstore
     ports:
       - "3306:3306"
     links:
       - jupyter
+  zeppelin:
+    hostname: zeppelin
+    build: ../columnstore_zeppelin
+    ports:
+      - "8080:8080"
+    links:
+      - columnstore
+    volumes:
+    - ../columnstore_zeppelin/notebook:/zeppelin/notebook
