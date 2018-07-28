@@ -2,27 +2,32 @@ CREATE DATABASE IF NOT EXISTS %DB% CHARACTER SET = 'UTF8';
 
 DROP TABLE IF EXISTS  %DB%.Books;
 CREATE TABLE %DB%.Books ( 
-id BIGINT UNSIGNED NOT NULL,
-coverprice DOUBLE(18,2) NOT NULL, 
+book_id BIGINT UNSIGNED NOT NULL,
+cover_price DECIMAL(7,2) NOT NULL, 
 isbn VARCHAR(255) NOT NULL,
 bookname VARCHAR(255) NOT NULL,
 category VARCHAR(255) NOT NULL, 
-discount DOUBLE(18,2) NOT NULL,  
-PRIMARY KEY(id)) Engine = INNODB;
+discount DECIMAL(7,2) NOT NULL,  
+PRIMARY KEY(book_id)) Engine = INNODB;
 
 
 DROP TABLE IF EXISTS  %DB%.Covers;
 CREATE TABLE %DB%.Covers ( 
-id INTEGER NOT NULL, 
+cover_id INTEGER NOT NULL, 
 image LONGBLOB NOT NULL,
-PRIMARY KEY(id)) Engine = INNODB;
+PRIMARY KEY(cover_id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.TransactionTypes;
 CREATE TABLE %DB%.TransactionTypes ( 
-id BIGINT UNSIGNED NOT NULL, 
+tr_type_id BIGINT UNSIGNED NOT NULL, 
 tr_type VARCHAR(50) NOT NULL,
-PRIMARY KEY(id)) Engine = INNODB;
+PRIMARY KEY(tr_type_id)) Engine = INNODB;
 
+DROP TABLE IF EXISTS  %DB%.MaritalStatuses;
+CREATE TABLE %DB%.MaritalStatuses ( 
+ms_id BIGINT UNSIGNED NOT NULL, 
+ms_type VARCHAR(50) NOT NULL,
+PRIMARY KEY(ms_id)) Engine = INNODB;
 
 DROP TABLE IF EXISTS  %DB%.Cards;
 CREATE TABLE %DB%.Cards ( 
@@ -31,7 +36,9 @@ customer_id BIGINT UNSIGNED NOT NULL,
 card_nm VARCHAR(255) NOT NULL,
 card_type VARCHAR(255) NOT NULL,
 discount VARCHAR(255) NOT NULL, 
-points DOUBLE(18,2) NOT NULL,  
+points INTEGER NOT NULL,  
+is_threshold TINYINT NOT NULL, 
+award_percent DECIMAL(7,2) NOT NULL, 
 PRIMARY KEY(card_id)) Engine = INNODB;
 
 
@@ -61,9 +68,10 @@ CREATE TABLE %DB%.Transactions (
 trans_date DATETIME NOT NULL,
 order_id BIGINT UNSIGNED NOT NULL,
 transaction_id BIGINT UNSIGNED NOT NULL,
-price DOUBLE(18,2) NOT NULL, 
-discount DOUBLE(18,2) NOT NULL, 
-discounted_price DOUBLE(18,2) NOT NULL, 
+book_id INTEGER UNSIGNED NOT NULL,
+price DECIMAL(7,2) NOT NULL, 
+discount DECIMAL(7,2) NOT NULL, 
+discounted_price DECIMAL(7,2) NOT NULL, 
 transaction_type INTEGER NOT NULL,
 customer_id BIGINT UNSIGNED NOT NULL,
 PRIMARY KEY(transaction_id)) Engine = INNODB;
@@ -76,6 +84,16 @@ card_is BIGINT UNSIGNED NOT NULL,
 points INTEGER NOT NULL, 
 customer_id BIGINT UNSIGNED NOT NULL,
 PRIMARY KEY(order_id)) Engine = INNODB;
+
+DROP TABLE IF EXISTS  %DB%.Customers;
+CREATE TABLE %DB%.Customers ( 
+customer_nm VARCHAR(512) NOT NULL,
+customer_id BIGINT UNSIGNED NOT NULL,
+customer_username_nm VARCHAR(512) NOT NULL,
+sex CHAR(1) NOT NULL,
+age INTEGER NOT NULL,
+marital_status INTEGER NOT NULL,
+PRIMARY KEY(customer_id)) Engine = INNODB;
 
 SELECT SLEEP(2) as '';
 SELECT 'Schema created.' as '';
@@ -150,6 +168,16 @@ ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
 SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in LoyaltyPoints') as '' FROM %DB%.LoyaltyPoints;
 
+LOAD DATA LOCAL INFILE '%CSV%customers.csv'
+INTO TABLE %DB%.Customers
+CHARACTER
+SET UTF8 FIELDS
+TERMINATED BY ','
+ENCLOSED BY ''''
+ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
+
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Customers') as '' FROM %DB%.Customers;
+
 LOAD DATA LOCAL INFILE '%CSV%covers.csv'
 INTO TABLE %DB%.Covers
 CHARACTER
@@ -160,7 +188,8 @@ ESCAPED BY '\\' LINES TERMINATED BY '\n' IGNORE 0 LINES;
 
 SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in Covers') as '' FROM %DB%.Covers;
 
-INSERT INTO %DB%.TransactionTypes (id,tr_type) VALUES (1,'Item'), (2,'Discount'),(3,'Shipping');
-
+INSERT INTO %DB%.TransactionTypes (tr_type_id,tr_type) VALUES (1,'Item'), (2,'Discount'),(3,'Shipping');
 SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in TransactionTypes') as '' FROM %DB%.TransactionTypes;
 
+INSERT INTO %DB%.MaritalStatuses (ms_id,ms_type) VALUES (1,'Never married'), (2,'Married'),(3,'Widow'),(4,'Separated'),(5,'Divorced');
+SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in MaritalStatuses') as '' FROM %DB%.MaritalStatuses;

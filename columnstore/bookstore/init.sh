@@ -1,8 +1,9 @@
 #!/bin/bash
 echo "Getting the bookstore data ..."
-curl https://dl.dropboxusercontent.com/s/c9lya7px62srd0a/twelve_mil.tar.gz?dl=1 --output /tmp/bookstore/csv/dropbox.tar.gz
+curl https://dl.dropboxusercontent.com/s/pthwm41k30qbbid/fmc.tar.gz?dl=1 --output /tmp/bookstore/csv/bookstore.tar.gz
+
 echo "Extracting bookstore files ..."
-tar -vxzf /tmp/bookstore/csv/dropbox.tar.gz --directory /tmp/bookstore/csv/
+tar -vxzf /tmp/bookstore/csv/bookstore.tar.gz --directory /tmp/bookstore/csv/
 
 echo "Waiting for columnstore to respond (2m)."
 i=0
