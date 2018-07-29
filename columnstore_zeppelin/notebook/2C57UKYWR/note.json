@@ -153,7 +153,7 @@
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by age \u003c 30;\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1);\n\n",
       "user": "anonymous",
-      "dateUpdated": "2018-07-25 18:37:48.049",
+      "dateUpdated": "2018-07-26 13:53:54.407",
       "config": {
         "colWidth": 4.0,
         "editorMode": "ace/mode/pig",
@@ -362,8 +362,8 @@
   "noteForms": {},
   "angularObjects": {
     "md:shared_process": [],
-    "python:shared_process": [],
     "sh:shared_process": [],
+    "pig:shared_process": [],
     "spark:shared_process": []
   },
   "config": {

@@ -1,0 +1,536 @@
+{
+  "paragraphs": [
+    {
+      "text": "import org.apache.spark.sql.SQLContext\nval sqlcontext \u003d new org.apache.spark.sql.SQLContext(sc)\n\nval jdbcDF \u003d spark.read.format(\"jdbc\").options(Map(\"url\" -\u003e  \"jdbc:mysql://columnstore:3306/bookstore?user\u003droot\u0026password\u003d\",\"dbtable\" -\u003e \"books\",\"fetchSize\" -\u003e \"10000\" )).load()\n\njdbcDF.createOrReplaceTempView(\"books\")\nval sqlDF \u003d sql(\"select book_id,cover_price,isbn,bookname,category,discount FROM books\")\n\n sqlDF.show()",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 18:35:30.572",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "editorHide": false,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.SQLContext\nwarning: there was one deprecation warning; re-run with -deprecation for details\nsqlcontext: org.apache.spark.sql.SQLContext \u003d org.apache.spark.sql.SQLContext@18d6695\njdbcDF: org.apache.spark.sql.DataFrame \u003d [book_id: decimal(20,0), cover_price: decimal(7,2) ... 4 more fields]\nsqlDF: org.apache.spark.sql.DataFrame \u003d [book_id: decimal(20,0), cover_price: decimal(7,2) ... 4 more fields]\n+-------+-----------+-------------+--------------------+-----------------+--------+\n|book_id|cover_price|         isbn|            bookname|         category|discount|\n+-------+-----------+-------------+--------------------+-----------------+--------+\n|      1|       8.99|0-6999-0001-0|Origin of Solar F...|           Sci-fi|    0.03|\n|      2|      22.49|0-6999-0002-0|   Monks of Rainbows|          Fantasy|    0.03|\n|      3|       8.90|0-6999-0003-0|Android of Men\u0027s ...|           Sci-fi|    0.03|\n|      4|      14.89|0-6999-0004-0|   Hope of My Dreams|          Fantasy|    0.00|\n|      5|       6.49|0-6999-0005-0|  Elife In the River|          Romance|    0.00|\n|      6|       2.89|0-6999-0006-0|             Cat Job|            Humor|    0.00|\n|      7|       7.49|0-6999-0007-0|   Man Kicked Me Out|            Humor|    0.03|\n|      8|      25.49|0-6999-0008-0|Symbols of the Stars|           Sci-fi|    0.05|\n|      9|       7.99|0-6999-0009-0|    Agents And Peons|            Drama|    0.03|\n|     10|      16.49|0-6999-0010-1|Battling In My Le...|            Drama|    0.03|\n|     11|       4.90|0-6999-0011-1|     Sheep of Silver|Children Classics|    0.00|\n|     12|      14.90|0-6999-0012-1|Mermen of the Titans|          Fantasy|    0.00|\n|     13|       9.99|0-6999-0013-1|Elifes of My Chil...|          Romance|    0.05|\n|     14|       3.99|0-6999-0014-1|      Boys And Sheep|Children Classics|    0.03|\n|     15|      14.49|0-6999-0015-1|Mother of the Imm...|           Sci-fi|    0.00|\n|     16|      14.90|0-6999-0016-1|Decisions of Bad ...|            Drama|    0.00|\n|     17|      10.89|0-6999-0017-1|  Statues On My Ship|           Sci-fi|    0.03|\n|     18|      27.49|0-6999-0018-1|     Doctors And Men|           Sci-fi|    0.00|\n|     19|      27.90|0-6999-0019-1|   Gods Without Hope|          Fantasy|    0.05|\n|     20|       7.90|0-6999-0020-2|  Lover Without Time|          Romance|    0.00|\n+-------+-----------+-------------+--------------------+-----------------+--------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d16"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1532613304119_-698545067",
+      "id": "20180726-135504_320292823",
+      "dateCreated": "2018-07-26 13:55:04.119",
+      "dateStarted": "2018-07-29 18:35:30.659",
+      "dateFinished": "2018-07-29 18:35:31.838",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import java.util.Properties\n\nval jdbcHostname \u003d \"columnstore\"\nval jdbcPort \u003d 3306\nval jdbcDatabase \u003d\"bookstore\"\nval jdbcUsername \u003d \"root\"\nval jdbcPassword \u003d\"\"\nval driverClass \u003d \"org.mariadb.jdbc.Driver\"\n// Create the JDBC URL without passing in the user and password parameters.\nval jdbcUrl \u003d s\"jdbc:mysql://${jdbcHostname}:${jdbcPort}/${jdbcDatabase}\"\n\n\n// Create a Properties() object to hold the parameters.\nval connectionProperties \u003d new Properties()\n\nconnectionProperties.put(\"user\", s\"${jdbcUsername}\")\nconnectionProperties.put(\"password\", s\"${jdbcPassword}\")\nconnectionProperties.setProperty(\"Driver\", driverClass)\n\nval pushdown_query \u003d \"(select * from bookstore.books) b\"\nval df \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\ndf.show()",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 18:35:31.859",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import java.util.Properties\njdbcHostname: String \u003d columnstore\njdbcPort: Int \u003d 3306\njdbcDatabase: String \u003d bookstore\njdbcUsername: String \u003d root\njdbcPassword: String \u003d \"\"\ndriverClass: String \u003d org.mariadb.jdbc.Driver\njdbcUrl: String \u003d jdbc:mysql://columnstore:3306/bookstore\nconnectionProperties: java.util.Properties \u003d {}\nres33: Object \u003d null\nres34: Object \u003d null\nres35: Object \u003d null\npushdown_query: String \u003d (select * from bookstore.books) b\ndf: org.apache.spark.sql.DataFrame \u003d [book_id: decimal(20,0), cover_price: decimal(7,2) ... 4 more fields]\n+-------+-----------+-------------+--------------------+-----------------+--------+\n|book_id|cover_price|         isbn|            bookname|         category|discount|\n+-------+-----------+-------------+--------------------+-----------------+--------+\n|      1|       8.99|0-6999-0001-0|Origin of Solar F...|           Sci-fi|    0.03|\n|      2|      22.49|0-6999-0002-0|   Monks of Rainbows|          Fantasy|    0.03|\n|      3|       8.90|0-6999-0003-0|Android of Men\u0027s ...|           Sci-fi|    0.03|\n|      4|      14.89|0-6999-0004-0|   Hope of My Dreams|          Fantasy|    0.00|\n|      5|       6.49|0-6999-0005-0|  Elife In the River|          Romance|    0.00|\n|      6|       2.89|0-6999-0006-0|             Cat Job|            Humor|    0.00|\n|      7|       7.49|0-6999-0007-0|   Man Kicked Me Out|            Humor|    0.03|\n|      8|      25.49|0-6999-0008-0|Symbols of the Stars|           Sci-fi|    0.05|\n|      9|       7.99|0-6999-0009-0|    Agents And Peons|            Drama|    0.03|\n|     10|      16.49|0-6999-0010-1|Battling In My Le...|            Drama|    0.03|\n|     11|       4.90|0-6999-0011-1|     Sheep of Silver|Children Classics|    0.00|\n|     12|      14.90|0-6999-0012-1|Mermen of the Titans|          Fantasy|    0.00|\n|     13|       9.99|0-6999-0013-1|Elifes of My Chil...|          Romance|    0.05|\n|     14|       3.99|0-6999-0014-1|      Boys And Sheep|Children Classics|    0.03|\n|     15|      14.49|0-6999-0015-1|Mother of the Imm...|           Sci-fi|    0.00|\n|     16|      14.90|0-6999-0016-1|Decisions of Bad ...|            Drama|    0.00|\n|     17|      10.89|0-6999-0017-1|  Statues On My Ship|           Sci-fi|    0.03|\n|     18|      27.49|0-6999-0018-1|     Doctors And Men|           Sci-fi|    0.00|\n|     19|      27.90|0-6999-0019-1|   Gods Without Hope|          Fantasy|    0.05|\n|     20|       7.90|0-6999-0020-2|  Lover Without Time|          Romance|    0.00|\n+-------+-----------+-------------+--------------------+-----------------+--------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d17"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1532697418540_1907381670",
+      "id": "20180727-131658_1120553468",
+      "dateCreated": "2018-07-27 13:16:58.541",
+      "dateStarted": "2018-07-29 18:35:31.923",
+      "dateFinished": "2018-07-29 18:35:34.889",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "\n%sql select  category, avg(cover_price) avg_price from books where discount\u003d\"${discount\u003d0.0,0.0|0.05|0.07}\" group by category",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 18:35:34.937",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "pieChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "category": "string",
+                      "avg_price": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": false
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "category",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "avg_price",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql",
+        "runOnSelectionChange": true
+      },
+      "settings": {
+        "params": {
+          "discount": "0.07"
+        },
+        "forms": {
+          "discount": {
+            "type": "Select",
+            "options": [
+              {
+                "value": "0.0"
+              },
+              {
+                "value": "0.05"
+              },
+              {
+                "value": "0.07"
+              }
+            ],
+            "name": "discount",
+            "defaultValue": "0.0",
+            "hidden": false
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "category\tavg_price\nRomance\t9.663611\nDrama\t13.937931\nFantasy\t23.591471\nChildren Classics\t9.587143\nClassics\t22.066250\nMystery\t14.262222\nSci-fi\t18.271395\nHorror\t11.287059\nNon-fiction\t13.990000\nHumor\t4.556154\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d18",
+            "http://172.18.0.3:4040/jobs/job?id\u003d19",
+            "http://172.18.0.3:4040/jobs/job?id\u003d20",
+            "http://172.18.0.3:4040/jobs/job?id\u003d21",
+            "http://172.18.0.3:4040/jobs/job?id\u003d22"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1532706664528_-1042816294",
+      "id": "20180727-155104_1393367914",
+      "dateCreated": "2018-07-27 15:51:04.529",
+      "dateStarted": "2018-07-29 18:35:35.299",
+      "dateFinished": "2018-07-29 18:35:36.636",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val pushdown_query \u003d \"(select * from bookstore.customers) c\"\nval df \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\ndf.show()\n\n\nval jdbcDF \u003d spark.read.format(\"jdbc\").options(Map(\"url\" -\u003e  \"jdbc:mysql://columnstore:3306/bookstore?user\u003droot\u0026password\u003d\",\"dbtable\" -\u003e \"(select c.*,ms.ms_type FROM customers c INNER JOIN maritalstatuses ms on ms.ms_id\u003dc.ms_id) as q\",\"fetchSize\" -\u003e \"10000\" )).load()\njdbcDF.createOrReplaceTempView(\"customers\")\nval sqlDF \u003d sql(\"select * FROM customers\")\n\n sqlDF.show()",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 18:41:32.763",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "pushdown_query: String \u003d (select * from bookstore.customers) c\ndf: org.apache.spark.sql.DataFrame \u003d [customer_nm: string, customer_id: decimal(20,0) ... 4 more fields]\n+------------------+-----------+--------------------+---+---+-----+\n|       customer_nm|customer_id|customer_username_nm|sex|age|ms_id|\n+------------------+-----------+--------------------+---+---+-----+\n|Christina Gonzalez|          1|aarondavis@shelf.con|  F| 30|    1|\n|        Emma Petty|          2|   sarah67@yupee.con|  F| 64|    2|\n|     Anthony Pitts|          3|floydchristopher@...|  M| 54|    2|\n|    Megan Jennings|          4|   aaron50@yupee.con|  F| 28|    1|\n|    Pamela Santana|          5|sawyerjames@shelf...|  F| 49|    2|\n|     Monica Abbott|          6|olsonpeggy@yupee.con|  F| 52|    2|\n|    Alyssa Rice MD|          7|   james76@yupee.con|  F| 33|    2|\n|       Katie Young|          8|  yclark@hutmail.con|  F| 21|    1|\n|       Lee Johnson|          9|moralesclarence@h...|  M| 52|    1|\n|    Jonathan Dixon|         10|pgonzalez@gamail.con|  M| 37|    2|\n|      Denise Johns|         11| zandrews@gamail.con|  F| 36|    4|\n|        Jacob Wong|         12|christinagray@gam...|  M| 22|    1|\n|  William Hatfield|         13|   aaron46@shelf.con|  M| 75|    2|\n|      Pamela Young|         14|charlesjones@yupe...|  F| 80|    3|\n|    Thomas Mendoza|         15|hgriffith@gamail.con|  M| 64|    2|\n|       Brenda Good|         16|susanalexander@ga...|  F| 50|    5|\n|        Mark Bowen|         17|mckeedavid@hutmai...|  M| 35|    2|\n| Patricia Anderson|         18| matthew53@shelf.con|  F| 53|    2|\n|     Jacob Ellison|         19|  khoffman@yupee.con|  M| 42|    2|\n|      Susan Ortega|         20| sandra22@gamail.con|  F| 51|    2|\n+------------------+-----------+--------------------+---+---+-----+\nonly showing top 20 rows\n\njdbcDF: org.apache.spark.sql.DataFrame \u003d [customer_nm: string, customer_id: decimal(20,0) ... 5 more fields]\nsqlDF: org.apache.spark.sql.DataFrame \u003d [customer_nm: string, customer_id: decimal(20,0) ... 5 more fields]\n+--------------------+-----------+--------------------+---+---+-----+-------------+\n|         customer_nm|customer_id|customer_username_nm|sex|age|ms_id|      ms_type|\n+--------------------+-----------+--------------------+---+---+-----+-------------+\n|Miss Bridget Broo...|     253953|gonzaleskimberly@...|  F| 28|    1|Never married|\n|         Terry Moore|     253954|  megan37@gamail.con|  F| 56|    2|      Married|\n|     Matthew Spencer|     253955|ryantaylor@gamail...|  M| 30|    1|Never married|\n|     Jonathon Briggs|     253956|    ldavis@yupee.con|  M| 25|    1|Never married|\n|      Raymond Bowers|     253957|ortizroger@hutmai...|  M| 52|    2|      Married|\n|         John Cooper|     253958|antonio43@gamail.con|  M| 29|    2|      Married|\n|          David Bush|     253959|nelsonmichael@hut...|  M| 88|    2|      Married|\n|    Kristopher Young|     253960|   mking@hutmail.con|  M| 36|    1|Never married|\n|       Shannon Brown|     253961|      jlee@yupee.con|  F| 83|    2|      Married|\n|     Matthew Bradley|     253962|martinezjanet@yup...|  M| 23|    1|Never married|\n|        Nathan Lopez|     253963|   zjones@gamail.con|  M| 79|    2|      Married|\n|           Ann Smith|     253964|estesjose@gamail.con|  F| 63|    5|     Divorced|\n|       Brianna Welch|     253965|andersonandrea@hu...|  F| 61|    2|      Married|\n|          Luke Lopez|     253966|kaitlinbrown@hutm...|  M| 11|    1|Never married|\n|      Sarah Garrison|     253967|    yjones@yupee.con|  F| 31|    2|      Married|\n|       Jessica Leach|     253968|    kdavis@shelf.con|  F| 45|    1|Never married|\n|     Nicholas Medina|     253969| nicole56@gamail.con|  M| 53|    1|Never married|\n|           Amy Scott|     253970|   tburton@yupee.con|  F| 29|    1|Never married|\n|     Brittany Garcia|     253971|   hlevy@hutmail.con|  F| 25|    1|Never married|\n|       Lauren Zavala|     253972|schroederbenjamin...|  F| 35|    2|      Married|\n+--------------------+-----------+--------------------+---+---+-----+-------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d32",
+            "http://172.18.0.3:4040/jobs/job?id\u003d33"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1532746678179_-234713680",
+      "id": "20180728-025758_119326633",
+      "dateCreated": "2018-07-28 02:57:58.180",
+      "dateStarted": "2018-07-29 18:41:32.854",
+      "dateFinished": "2018-07-29 18:41:38.254",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md ### Customer Profile",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 18:44:54.707",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eCustomer Profile\u003c/h3\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1532889870018_-1165096955",
+      "id": "20180729-184430_682476293",
+      "dateCreated": "2018-07-29 18:44:30.018",
+      "dateStarted": "2018-07-29 18:44:54.723",
+      "dateFinished": "2018-07-29 18:44:56.273",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "\n%sql select  age, ms_type, count(1) cnt  from customers group by age, ms_type",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 18:43:55.055",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "marital_status": "string",
+                      "age": "string",
+                      "cnt": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": true
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "style": "stack"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "age",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "ms_type",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "cnt",
+                  "index": 2.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "age\tms_type\tcnt\n76\tMarried\t8015\n101\tDivorced\t3\n85\tSeparated\t8\n57\tWidow\t741\n25\tDivorced\t182\n30\tSeparated\t286\n66\tNever married\t1118\n73\tDivorced\t1990\n79\tMarried\t4390\n85\tDivorced\t125\n27\tDivorced\t184\n47\tDivorced\t3758\n69\tWidow\t1959\n42\tNever married\t7735\n89\tMarried\t614\n22\tDivorced\t18\n54\tWidow\t706\n60\tDivorced\t4167\n82\tNever married\t347\n46\tNever married\t7236\n91\tWidow\t816\n98\tNever married\t31\n31\tWidow\t32\n92\tSeparated\t1\n61\tMarried\t15624\n44\tDivorced\t3332\n48\tSeparated\t770\n52\tWidow\t365\n46\tDivorced\t3644\n67\tSeparated\t160\n87\tDivorced\t70\n75\tWidow\t3709\n72\tSeparated\t151\n88\tSeparated\t4\n33\tMarried\t8512\n14\tNever married\t8243\n12\tNever married\t5173\n67\tMarried\t9318\n63\tNever married\t2124\n90\tDivorced\t56\n87\tSeparated\t2\n73\tMarried\t8986\n40\tNever married\t7117\n56\tMarried\t16763\n61\tNever married\t2501\n94\tWidow\t489\n91\tNever married\t79\n34\tNever married\t10417\n47\tMarried\t14179\n65\tDivorced\t3351\n71\tWidow\t2111\n56\tWidow\t723\n20\tSeparated\t22\n34\tWidow\t63\n74\tMarried\t9648\n50\tMarried\t15281\n62\tSeparated\t373\n99\tWidow\t129\n40\tDivorced\t2075\n74\tSeparated\t84\n22\tSeparated\t13\n87\tWidow\t672\n27\tMarried\t3997\n80\tSeparated\t39\n100\tWidow\t167\n28\tSeparated\t156\n75\tSeparated\t116\n47\tNever married\t7461\n17\tNever married\t12565\n85\tMarried\t933\n51\tNever married\t6385\n88\tDivorced\t127\n95\tDivorced\t17\n101\tSeparated\t1\n35\tSeparated\t553\n60\tSeparated\t359\n15\tMarried\t6\n44\tWidow\t157\n94\tMarried\t182\n77\tSeparated\t58\n80\tWidow\t2834\n24\tDivorced\t126\n32\tNever married\t12181\n55\tNever married\t4756\n33\tSeparated\t307\n93\tWidow\t577\n22\tMarried\t491\n18\tMarried\t7\n101\tWidow\t38\n101\tMarried\t12\n67\tDivorced\t2348\n69\tDivorced\t1919\n29\tSeparated\t332\n72\tWidow\t2214\n82\tDivorced\t483\n46\tMarried\t13628\n72\tDivorced\t2269\n61\tDivorced\t4522\n32\tMarried\t7607\n38\tSeparated\t439\n80\tNever married\t399\n23\tDivorced\t16\n55\tDivorced\t5691\n96\tWidow\t436\n48\tDivorced\t3927\n86\tDivorced\t160\n65\tMarried\t13202\n51\tDivorced\t4904\n81\tWidow\t2644\n27\tNever married\t17716\n79\tWidow\t3304\n86\tWidow\t1622\n63\tSeparated\t346\n102\tDivorced\t2\n74\tNever married\t845\n11\tNever married\t4455\n55\tWidow\t719\n81\tNever married\t359\n71\tMarried\t9387\n52\tSeparated\t741\n57\tNever married\t4678\n29\tNever married\t13309\n44\tSeparated\t668\n21\tMarried\t499\n20\tMarried\t501\n84\tDivorced\t204\n23\tSeparated\t18\n69\tSeparated\t112\n43\tWidow\t78\n90\tNever married\t83\n21\tSeparated\t20\n34\tSeparated\t530\n73\tSeparated\t122\n21\tWidow\t3\n37\tNever married\t9973\n33\tDivorced\t667\n30\tDivorced\t566\n97\tSeparated\t1\n38\tMarried\t10065\n54\tSeparated\t626\n29\tDivorced\t662\n89\tDivorced\t95\n28\tWidow\t8\n68\tDivorced\t2156\n66\tWidow\t1333\n22\tNever married\t15892\n67\tNever married\t989\n76\tSeparated\t100\n64\tSeparated\t242\n35\tNever married\t10838\n30\tMarried\t7458\n74\tDivorced\t1893\n49\tMarried\t15731\n68\tSeparated\t154\n50\tSeparated\t717\n58\tMarried\t17959\n71\tDivorced\t2140\n60\tNever married\t2238\n62\tWidow\t1054\n97\tMarried\t179\n31\tSeparated\t317\n40\tMarried\t10600\n59\tWidow\t1162\n92\tWidow\t602\n71\tNever married\t872\n78\tMarried\t4785\n45\tDivorced\t3550\n25\tMarried\t3483\n13\tNever married\t6914\n89\tWidow\t1638\n49\tDivorced\t4974\n25\tSeparated\t144\n60\tMarried\t14434\n38\tDivorced\t1283\n27\tSeparated\t150\n90\tMarried\t291\n26\tWidow\t8\n23\tMarried\t542\n41\tDivorced\t1998\n41\tMarried\t11433\n62\tNever married\t2252\n39\tNever married\t7081\n39\tDivorced\t1973\n59\tDivorced\t4800\n66\tSeparated\t194\n41\tNever married\t7447\n70\tSeparated\t117\n62\tDivorced\t4278\n54\tNever married\t4679\n76\tDivorced\t1516\n30\tWidow\t27\n28\tDivorced\t186\n80\tDivorced\t521\n51\tSeparated\t721\n18\tNever married\t13412\n15\tWidow\t1\n78\tNever married\t403\n32\tWidow\t24\n88\tWidow\t1322\n70\tNever married\t802\n42\tWidow\t89\n92\tDivorced\t27\n95\tNever married\t51\n77\tWidow\t2282\n65\tWidow\t1589\n16\tMarried\t4\n90\tSeparated\t1\n84\tMarried\t1428\n64\tMarried\t14385\n53\tSeparated\t763\n61\tSeparated\t396\n39\tMarried\t10733\n75\tMarried\t8900\n39\tSeparated\t523\n84\tNever married\t221\n38\tWidow\t52\n42\tMarried\t11742\n36\tMarried\t11413\n34\tDivorced\t1515\n69\tNever married\t765\n36\tNever married\t10311\n57\tDivorced\t5522\n43\tSeparated\t517\n95\tMarried\t151\n74\tWidow\t4057\n44\tNever married\t6686\n78\tDivorced\t873\n25\tWidow\t11\n31\tDivorced\t707\n56\tSeparated\t631\n86\tNever married\t177\n20\tDivorced\t17\n99\tMarried\t37\n32\tSeparated\t293\n14\tMarried\t7\n36\tDivorced\t1390\n93\tNever married\t42\n68\tMarried\t8624\n35\tDivorced\t1428\n19\tWidow\t1\n64\tNever married\t1591\n58\tSeparated\t658\n33\tWidow\t33\n50\tDivorced\t4739\n96\tNever married\t44\n101\tNever married\t3\n63\tDivorced\t4007\n54\tDivorced\t5575\n28\tNever married\t16284\n71\tSeparated\t131\n52\tNever married\t5982\n75\tNever married\t819\n47\tSeparated\t748\n93\tDivorced\t32\n50\tWidow\t411\n78\tSeparated\t66\n99\tNever married\t13\n79\tSeparated\t47\n82\tMarried\t3108\n10\tNever married\t3101\n93\tMarried\t182\n46\tWidow\t190\n98\tDivorced\t21\n100\tMarried\t60\n95\tWidow\t436\n24\tNever married\t13182\n53\tDivorced\t4961\n96\tMarried\t128\n75\tDivorced\t1735\n92\tMarried\t220\n45\tMarried\t13138\n80\tMarried\t3708\n68\tNever married\t863\n9\tNever married\t3759\n32\tDivorced\t636\n37\tMarried\t10983\n76\tNever married\t697\n34\tMarried\t11435\n70\tDivorced\t1827\n91\tMarried\t274\n85\tNever married\t130\n83\tWidow\t2372\n81\tDivorced\t558\n53\tWidow\t364\n45\tWidow\t165\n46\tSeparated\t732\n73\tWidow\t1967\n66\tDivorced\t2587\n60\tWidow\t1072\n97\tNever married\t48\n19\tSeparated\t14\n99\tDivorced\t7\n35\tMarried\t11737\n49\tSeparated\t732\n50\tNever married\t6045\n79\tNever married\t473\n76\tWidow\t3460\n51\tMarried\t15803\n83\tNever married\t331\n28\tMarried\t3587\n45\tSeparated\t720\n24\tWidow\t8\n17\tMarried\t11\n96\tDivorced\t24\n54\tMarried\t17654\n36\tSeparated\t474\n24\tSeparated\t94\n53\tMarried\t16098\n97\tDivorced\t34\n77\tDivorced\t1114\n58\tDivorced\t5809\n79\tDivorced\t618\n36\tWidow\t61\n88\tNever married\t143\n49\tWidow\t371\n45\tNever married\t7049\n85\tWidow\t1318\n57\tMarried\t17854\n89\tSeparated\t5\n26\tMarried\t3871\n68\tWidow\t1061\n19\tDivorced\t16\n58\tNever married\t4655\n86\tSeparated\t5\n8\tNever married\t3225\n57\tSeparated\t628\n77\tMarried\t5632\n37\tSeparated\t485\n82\tSeparated\t27\n48\tMarried\t14281\n64\tWidow\t1822\n61\tWidow\t1109\n87\tMarried\t476\n35\tWidow\t61\n83\tMarried\t3000\n21\tNever married\t14617\n63\tMarried\t13630\n48\tWidow\t208\n38\tNever married\t9060\n49\tNever married\t6300\n56\tNever married\t4507\n51\tWidow\t348\n24\tMarried\t3032\n16\tNever married\t10953\n59\tNever married\t2553\n15\tNever married\t8849\n91\tDivorced\t42\n48\tNever married\t7498\n70\tMarried\t8647\n72\tNever married\t888\n25\tNever married\t15995\n55\tMarried\t17877\n30\tNever married\t11855\n100\tDivorced\t9\n29\tWidow\t37\n42\tDivorced\t2185\n64\tDivorced\t3731\n41\tWidow\t80\n26\tNever married\t16926\n19\tMarried\t439\n83\tDivorced\t461\n98\tMarried\t131\n102\tWidow\t38\n55\tSeparated\t662\n37\tWidow\t64\n26\tSeparated\t149\n72\tMarried\t10122\n47\tWidow\t223\n102\tMarried\t14\n70\tWidow\t1904\n43\tDivorced\t2058\n21\tDivorced\t12\n23\tWidow\t1\n62\tMarried\t14346\n59\tMarried\t16310\n59\tSeparated\t398\n69\tMarried\t8647\n100\tNever married\t16\n78\tWidow\t2083\n20\tNever married\t15553\n86\tMarried\t1133\n26\tDivorced\t167\n29\tMarried\t8537\n31\tMarried\t8859\n53\tNever married\t6356\n65\tNever married\t1400\n37\tDivorced\t1407\n23\tNever married\t17058\n67\tWidow\t1206\n84\tWidow\t2019\n88\tMarried\t957\n65\tSeparated\t255\n83\tSeparated\t26\n58\tWidow\t748\n43\tMarried\t10713\n40\tSeparated\t584\n81\tMarried\t3406\n89\tNever married\t155\n94\tNever married\t48\n27\tWidow\t11\n66\tMarried\t10660\n102\tNever married\t4\n43\tNever married\t7087\n97\tWidow\t543\n92\tNever married\t35\n98\tSeparated\t1\n52\tDivorced\t4868\n87\tNever married\t75\n56\tDivorced\t5201\n98\tWidow\t411\n81\tSeparated\t26\n52\tMarried\t15342\n41\tSeparated\t605\n99\tSeparated\t2\n33\tNever married\t13561\n90\tWidow\t859\n31\tNever married\t13863\n39\tWidow\t69\n19\tNever married\t13591\n42\tSeparated\t629\n77\tNever married\t481\n40\tWidow\t85\n14\tWidow\t1\n44\tMarried\t12603\n84\tSeparated\t7\n73\tNever married\t823\n82\tWidow\t2348\n94\tDivorced\t33\n63\tWidow\t965\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d34",
+            "http://172.18.0.3:4040/jobs/job?id\u003d35",
+            "http://172.18.0.3:4040/jobs/job?id\u003d36",
+            "http://172.18.0.3:4040/jobs/job?id\u003d37",
+            "http://172.18.0.3:4040/jobs/job?id\u003d38"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1532699666861_-1684096974",
+      "id": "20180727-135426_1794137245",
+      "dateCreated": "2018-07-27 13:54:26.861",
+      "dateStarted": "2018-07-29 18:42:14.428",
+      "dateFinished": "2018-07-29 18:42:16.913",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 11:18:27.718",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1532746663256_-81220370",
+      "id": "20180728-025743_1812333124",
+      "dateCreated": "2018-07-28 02:57:43.256",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2018-07-29 11:18:27.780",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1532746601913_1679550802",
+      "id": "20180728-025641_1739767145",
+      "dateCreated": "2018-07-28 02:56:41.913",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Scala SQL",
+  "id": "2DK6N74VA",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
