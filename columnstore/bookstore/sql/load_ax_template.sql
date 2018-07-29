@@ -94,7 +94,7 @@
     customer_username_nm VARCHAR(512) NOT NULL,
     sex CHAR(1) NOT NULL,
     age INTEGER NOT NULL,
-    marital_status INTEGER NOT NULL)
+    ms_id INTEGER NOT NULL)
     engine=columnstore;
 
     SELECT SLEEP(2) as '';
