@@ -195,3 +195,5 @@
     INSERT INTO %DB%.MaritalStatuses (ms_id,ms_type) VALUES (1,'Never married'), (2,'Married'),(3,'Widow'),(4,'Separated'),(5,'Divorced');
     SELECT CONCAT('Loaded ',FORMAT(COUNT(*),0),' in MaritalStatuses') as '' FROM %DB%.MaritalStatuses;
 
+    SET @@max_length_for_sort_data = 2048;
+
