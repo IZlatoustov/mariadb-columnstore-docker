@@ -53,9 +53,9 @@
     },
     {
       "title": "Load data into table",
-      "text": "import org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\n\n// Zeppelin creates and injects sc (SparkContext) and sqlContext (HiveContext or SqlContext)\n// So you don\u0027t need create them manually\n\n// load bank data\nval bankText \u003d sc.parallelize(\n    IOUtils.toString(\n        new URL(\"https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\"),\n        Charset.forName(\"utf8\")).split(\"\\n\"))\n\ncase class Bank(age: Integer, job: String, marital: String, education: String, balance: Integer)\n\nval bank \u003d bankText.map(s \u003d\u003e s.split(\";\")).filter(s \u003d\u003e s(0) !\u003d \"\\\"age\\\"\").map(\n    s \u003d\u003e Bank(s(0).toInt, \n            s(1).replaceAll(\"\\\"\", \"\"),\n            s(2).replaceAll(\"\\\"\", \"\"),\n            s(3).replaceAll(\"\\\"\", \"\"),\n            s(5).replaceAll(\"\\\"\", \"\").toInt\n        )\n).toDF()\nbank.registerTempTable(\"bank\")",
+      "text": "%spark\nimport org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\n\n// Zeppelin creates and injects sc (SparkContext) and sqlContext (HiveContext or SqlContext)\n// So you don\u0027t need create them manually\n\n// load bank data\nval bankText \u003d sc.parallelize(\n    IOUtils.toString(\n        new URL(\"https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\"),\n        Charset.forName(\"utf8\")).split(\"\\n\"))\n\ncase class Bank(age: Integer, job: String, marital: String, education: String, balance: Integer)\n\nval bank \u003d bankText.map(s \u003d\u003e s.split(\";\")).filter(s \u003d\u003e s(0) !\u003d \"\\\"age\\\"\").map(\n    s \u003d\u003e Bank(s(0).toInt, \n            s(1).replaceAll(\"\\\"\", \"\"),\n            s(2).replaceAll(\"\\\"\", \"\"),\n            s(3).replaceAll(\"\\\"\", \"\"),\n            s(5).replaceAll(\"\\\"\", \"\").toInt\n        )\n).toDF()\nbank.registerTempTable(\"bank\")",
       "user": "anonymous",
-      "dateUpdated": "2018-07-26 13:27:25.387",
+      "dateUpdated": "2018-07-30 16:28:50.298",
       "config": {
         "colWidth": 12.0,
         "title": true,
@@ -103,7 +103,7 @@
     {
       "text": "%sql \nselect age, count(1) value\nfrom bank \nwhere age \u003c 30 \ngroup by age \norder by age",
       "user": "anonymous",
-      "dateUpdated": "2018-07-27 15:56:07.178",
+      "dateUpdated": "2018-07-30 16:33:05.001",
       "config": {
         "colWidth": 4.0,
         "results": [
@@ -199,7 +199,7 @@
     {
       "text": "%sql \nselect age, count(1) value \nfrom bank \nwhere age \u003c ${maxAge\u003d30} \ngroup by age \norder by age",
       "user": "anonymous",
-      "dateUpdated": "2018-07-27 15:56:07.310",
+      "dateUpdated": "2018-07-30 16:33:05.210",
       "config": {
         "colWidth": 4.0,
         "results": [
@@ -213,7 +213,8 @@
                   "rotate": {
                     "degree": "-45"
                   },
-                  "xLabelStatus": "default"
+                  "xLabelStatus": "default",
+                  "stacked": true
                 }
               },
               "commonSetting": {},
@@ -280,7 +281,7 @@
     {
       "text": "%sql \nselect age, count(1) value \nfrom bank \nwhere marital\u003d\"${marital\u003dsingle,single|divorced|married}\" \ngroup by age \norder by age",
       "user": "anonymous",
-      "dateUpdated": "2018-07-27 15:56:07.500",
+      "dateUpdated": "2018-07-30 16:33:05.356",
       "config": {
         "colWidth": 4.0,
         "results": [
@@ -294,7 +295,8 @@
                   "rotate": {
                     "degree": "-45"
                   },
-                  "xLabelStatus": "default"
+                  "xLabelStatus": "default",
+                  "style": "expand"
                 }
               },
               "commonSetting": {},
@@ -496,7 +498,10 @@
   "id": "2A94M5J1Z",
   "noteParams": {},
   "noteForms": {},
-  "angularObjects": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "spark:shared_process": []
+  },
   "config": {
     "looknfeel": "default",
     "isZeppelinNotebookCronEnable": false
