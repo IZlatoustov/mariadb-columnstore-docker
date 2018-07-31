@@ -3,7 +3,7 @@
     {
       "text": "import java.util.Properties\nimport org.apache.spark.sql.SQLContext\n\nval jdbcHostname \u003d \"columnstore\"\nval jdbcPort \u003d 3306\nval jdbcDatabase \u003d\"bookstore\"\nval jdbcUsername \u003d \"root\"\nval jdbcPassword \u003d\"\"\nval driverClass \u003d \"org.mariadb.jdbc.Driver\"\n// Create the JDBC URL without passing in the user and password parameters.\nval jdbcUrl \u003d s\"jdbc:mysql://${jdbcHostname}:${jdbcPort}/${jdbcDatabase}\"\n\n// Create a Properties() object to hold the parameters.\nval connectionProperties \u003d new Properties()\nconnectionProperties.put(\"user\", s\"${jdbcUsername}\")\nconnectionProperties.put(\"password\", s\"${jdbcPassword}\")\nconnectionProperties.setProperty(\"Driver\", driverClass)\nconnectionProperties.setProperty(\"fetchSize\",\"10000\")\nconnectionProperties.setProperty(\"fetchSize\",\"10000\")\nval sqlcontext \u003d new org.apache.spark.sql.SQLContext(sc)\n\nval pushdown_query \u003d \"(select * from bookstore.books) b\"\n\nval df_books \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\ndf_books.createOrReplaceTempView(\"books\")\ndf_books.printSchema()",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:34:16.761",
+      "dateUpdated": "2018-07-31 16:24:11.473",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -28,7 +28,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "import java.util.Properties\nimport org.apache.spark.sql.SQLContext\njdbcHostname: String \u003d columnstore\njdbcPort: Int \u003d 3306\njdbcDatabase: String \u003d bookstore\njdbcUsername: String \u003d root\njdbcPassword: String \u003d \"\"\ndriverClass: String \u003d org.mariadb.jdbc.Driver\njdbcUrl: String \u003d jdbc:mysql://columnstore:3306/bookstore\nconnectionProperties: java.util.Properties \u003d {}\nres20: Object \u003d null\nres21: Object \u003d null\nres22: Object \u003d null\nres23: Object \u003d null\nres24: Object \u003d 10000\nwarning: there was one deprecation warning; re-run with -deprecation for details\nsqlcontext: org.apache.spark.sql.SQLContext \u003d org.apache.spark.sql.SQLContext@1b7ba0bf\npushdown_query: String \u003d (select * from bookstore.books) b\ndf_books: org.apache.spark.sql.DataFrame \u003d [book_id: decimal(20,0), cover_price: decimal(7,2) ... 4 more fields]\nroot\n |-- book_id: decimal(20,0) (nullable \u003d false)\n |-- cover_price: decimal(7,2) (nullable \u003d false)\n |-- isbn: string (nullable \u003d false)\n |-- bookname: string (nullable \u003d false)\n |-- category: string (nullable \u003d false)\n |-- discount: decimal(7,2) (nullable \u003d false)\n\n"
+            "data": "import java.util.Properties\nimport org.apache.spark.sql.SQLContext\njdbcHostname: String \u003d columnstore\njdbcPort: Int \u003d 3306\njdbcDatabase: String \u003d bookstore\njdbcUsername: String \u003d root\njdbcPassword: String \u003d \"\"\ndriverClass: String \u003d org.mariadb.jdbc.Driver\njdbcUrl: String \u003d jdbc:mysql://columnstore:3306/bookstore\nconnectionProperties: java.util.Properties \u003d {}\nres6: Object \u003d null\nres7: Object \u003d null\nres8: Object \u003d null\nres9: Object \u003d null\nres10: Object \u003d 10000\nwarning: there was one deprecation warning; re-run with -deprecation for details\nsqlcontext: org.apache.spark.sql.SQLContext \u003d org.apache.spark.sql.SQLContext@34a4ded2\npushdown_query: String \u003d (select * from bookstore.books) b\ndf_books: org.apache.spark.sql.DataFrame \u003d [book_id: decimal(20,0), cover_price: decimal(7,2) ... 4 more fields]\nroot\n |-- book_id: decimal(20,0) (nullable \u003d false)\n |-- cover_price: decimal(7,2) (nullable \u003d false)\n |-- isbn: string (nullable \u003d false)\n |-- bookname: string (nullable \u003d false)\n |-- category: string (nullable \u003d false)\n |-- discount: decimal(7,2) (nullable \u003d false)\n\n"
           }
         ]
       },
@@ -36,15 +36,15 @@
       "jobName": "paragraph_1532697418540_1907381670",
       "id": "20180727-131658_1120553468",
       "dateCreated": "2018-07-27 13:16:58.541",
-      "dateStarted": "2018-07-30 16:34:16.865",
-      "dateFinished": "2018-07-30 16:34:19.564",
+      "dateStarted": "2018-07-31 16:24:11.685",
+      "dateFinished": "2018-07-31 16:24:52.120",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "\n",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:34:19.572",
+      "dateUpdated": "2018-07-31 16:24:52.150",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -86,7 +86,7 @@
       "title": "Price Distribution by Genre",
       "text": "%sql\nselect  category, avg(cover_price) as `Cover Price(Avg)`, count(*) as Items from books where discount IN (${checkbox(,):Discount\u003d0.00|0.03|0.07,0.00|0.03|0.07}) group by category order by `Cover Price(Avg)`",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:34:19.722",
+      "dateUpdated": "2018-07-31 16:24:52.343",
       "config": {
         "colWidth": 6.0,
         "fontSize": 9.0,
@@ -259,7 +259,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "category\tCover Price(Avg)\tItems\nHumor\t5.200623\t257\nChildren Classics\t9.380285\t526\nRomance\t9.724517\t600\nNon-fiction\t10.096400\t25\nHorror\t11.380146\t342\nDrama\t13.016835\t496\nMystery\t14.344947\t378\nSci-fi\t18.629865\t742\nClassics\t22.496565\t131\nFantasy\t23.286613\t744\n"
+            "data": "category\tCover Price(Avg)\tItems\nHumor\t5.449737\t228\nChildren Classics\t9.317143\t560\nRomance\t9.756082\t656\nNon-fiction\t10.344706\t17\nHorror\t11.167402\t331\nDrama\t13.366735\t438\nMystery\t14.275859\t396\nSci-fi\t18.647811\t708\nClassics\t22.944113\t141\nFantasy\t23.315152\t759\n"
           }
         ]
       },
@@ -270,7 +270,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://172.18.0.3:4040/jobs/job?id\u003d7"
+            "http://172.18.0.3:4040/jobs/job?id\u003d0"
           ],
           "interpreterSettingId": "spark"
         }
@@ -279,8 +279,8 @@
       "jobName": "paragraph_1532706664528_-1042816294",
       "id": "20180727-155104_1393367914",
       "dateCreated": "2018-07-27 15:51:04.529",
-      "dateStarted": "2018-07-30 16:34:19.784",
-      "dateFinished": "2018-07-30 16:34:20.940",
+      "dateStarted": "2018-07-31 16:24:52.482",
+      "dateFinished": "2018-07-31 16:25:01.709",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -288,7 +288,7 @@
       "title": "Variety by Genre",
       "text": "%sql\nselect  category, avg(cover_price) as `Cover Price(Avg)`, count(*) as Items from books WHERE discount IN (${checkbox(,):Discount\u003d0.00|0.03|0.07,0.00|0.03|0.07}) group by category order by Items ",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:34:20.990",
+      "dateUpdated": "2018-07-31 16:25:01.851",
       "config": {
         "colWidth": 6.0,
         "fontSize": 9.0,
@@ -409,7 +409,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "category\tCover Price(Avg)\tItems\nNon-fiction\t10.096400\t25\nClassics\t22.496565\t131\nHumor\t5.200623\t257\nHorror\t11.380146\t342\nMystery\t14.344947\t378\nDrama\t13.016835\t496\nChildren Classics\t9.380285\t526\nRomance\t9.724517\t600\nSci-fi\t18.629865\t742\nFantasy\t23.286613\t744\n"
+            "data": "category\tCover Price(Avg)\tItems\nNon-fiction\t10.344706\t17\nClassics\t22.944113\t141\nHumor\t5.449737\t228\nHorror\t11.167402\t331\nMystery\t14.275859\t396\nDrama\t13.366735\t438\nChildren Classics\t9.317143\t560\nRomance\t9.756082\t656\nSci-fi\t18.647811\t708\nFantasy\t23.315152\t759\n"
           }
         ]
       },
@@ -420,7 +420,7 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://172.18.0.3:4040/jobs/job?id\u003d8"
+            "http://172.18.0.3:4040/jobs/job?id\u003d1"
           ],
           "interpreterSettingId": "spark"
         }
@@ -429,15 +429,15 @@
       "jobName": "paragraph_1532937455064_1123435734",
       "id": "20180730-075735_302224287",
       "dateCreated": "2018-07-30 07:57:35.065",
-      "dateStarted": "2018-07-30 16:34:21.055",
-      "dateFinished": "2018-07-30 16:34:22.033",
+      "dateStarted": "2018-07-31 16:25:02.230",
+      "dateFinished": "2018-07-31 16:25:04.694",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "val pushdown_query\u003d\"(select c.*, ms.ms_type FROM customers c INNER JOIN maritalstatuses ms on ms.ms_id\u003dc.ms_id) as q\"\n\nval df_customers \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\ndf_customers.createOrReplaceTempView(\"customers\")\ndf_customers.printSchema()",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:34:22.061",
+      "dateUpdated": "2018-07-31 16:25:04.739",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -451,7 +451,7 @@
         },
         "editorMode": "ace/mode/scala",
         "title": false,
-        "editorHide": true,
+        "editorHide": false,
         "tableHide": true
       },
       "settings": {
@@ -471,8 +471,8 @@
       "jobName": "paragraph_1532959951147_-19179025",
       "id": "20180730-141231_248009427",
       "dateCreated": "2018-07-30 14:12:31.147",
-      "dateStarted": "2018-07-30 16:34:22.150",
-      "dateFinished": "2018-07-30 16:34:22.794",
+      "dateStarted": "2018-07-31 16:25:05.103",
+      "dateFinished": "2018-07-31 16:25:06.115",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -480,7 +480,7 @@
       "title": "Customer Profile",
       "text": "%sql\nselect  age, ms_type, count(1) as cnt from customers group by age, ms_type",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 18:21:36.072",
+      "dateUpdated": "2018-07-31 16:26:23.745",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -577,7 +577,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "age\tms_type\tcnt\n76\tMarried\t8015\n101\tDivorced\t3\n85\tSeparated\t8\n57\tWidow\t741\n25\tDivorced\t182\n30\tSeparated\t286\n73\tDivorced\t1990\n66\tNever married\t1118\n79\tMarried\t4390\n27\tDivorced\t184\n85\tDivorced\t125\n47\tDivorced\t3758\n69\tWidow\t1959\n42\tNever married\t7735\n89\tMarried\t614\n22\tDivorced\t18\n60\tDivorced\t4167\n82\tNever married\t347\n54\tWidow\t706\n46\tNever married\t7236\n98\tNever married\t31\n91\tWidow\t816\n31\tWidow\t32\n92\tSeparated\t1\n61\tMarried\t15624\n44\tDivorced\t3332\n48\tSeparated\t770\n52\tWidow\t365\n46\tDivorced\t3644\n67\tSeparated\t160\n87\tDivorced\t70\n75\tWidow\t3709\n72\tSeparated\t151\n88\tSeparated\t4\n33\tMarried\t8512\n14\tNever married\t8243\n12\tNever married\t5173\n67\tMarried\t9318\n63\tNever married\t2124\n90\tDivorced\t56\n87\tSeparated\t2\n73\tMarried\t8986\n40\tNever married\t7117\n56\tMarried\t16763\n61\tNever married\t2501\n94\tWidow\t489\n91\tNever married\t79\n34\tNever married\t10417\n47\tMarried\t14179\n71\tWidow\t2111\n65\tDivorced\t3351\n56\tWidow\t723\n20\tSeparated\t22\n34\tWidow\t63\n50\tMarried\t15281\n74\tMarried\t9648\n62\tSeparated\t373\n99\tWidow\t129\n40\tDivorced\t2075\n74\tSeparated\t84\n22\tSeparated\t13\n87\tWidow\t672\n27\tMarried\t3997\n80\tSeparated\t39\n100\tWidow\t167\n28\tSeparated\t156\n75\tSeparated\t116\n47\tNever married\t7461\n17\tNever married\t12565\n85\tMarried\t933\n51\tNever married\t6385\n88\tDivorced\t127\n95\tDivorced\t17\n101\tSeparated\t1\n35\tSeparated\t553\n60\tSeparated\t359\n15\tMarried\t6\n44\tWidow\t157\n94\tMarried\t182\n77\tSeparated\t58\n80\tWidow\t2834\n24\tDivorced\t126\n32\tNever married\t12181\n55\tNever married\t4756\n22\tMarried\t491\n93\tWidow\t577\n33\tSeparated\t307\n101\tWidow\t38\n101\tMarried\t12\n18\tMarried\t7\n29\tSeparated\t332\n67\tDivorced\t2348\n69\tDivorced\t1919\n82\tDivorced\t483\n72\tWidow\t2214\n46\tMarried\t13628\n72\tDivorced\t2269\n32\tMarried\t7607\n61\tDivorced\t4522\n38\tSeparated\t439\n80\tNever married\t399\n23\tDivorced\t16\n55\tDivorced\t5691\n96\tWidow\t436\n48\tDivorced\t3927\n86\tDivorced\t160\n65\tMarried\t13202\n51\tDivorced\t4904\n81\tWidow\t2644\n27\tNever married\t17716\n79\tWidow\t3304\n86\tWidow\t1622\n63\tSeparated\t346\n102\tDivorced\t2\n74\tNever married\t845\n11\tNever married\t4455\n81\tNever married\t359\n55\tWidow\t719\n71\tMarried\t9387\n29\tNever married\t13309\n57\tNever married\t4678\n21\tMarried\t499\n20\tMarried\t501\n52\tSeparated\t741\n84\tDivorced\t204\n44\tSeparated\t668\n23\tSeparated\t18\n43\tWidow\t78\n90\tNever married\t83\n69\tSeparated\t112\n21\tSeparated\t20\n34\tSeparated\t530\n73\tSeparated\t122\n21\tWidow\t3\n37\tNever married\t9973\n30\tDivorced\t566\n33\tDivorced\t667\n97\tSeparated\t1\n38\tMarried\t10065\n54\tSeparated\t626\n29\tDivorced\t662\n89\tDivorced\t95\n28\tWidow\t8\n66\tWidow\t1333\n68\tDivorced\t2156\n22\tNever married\t15892\n67\tNever married\t989\n76\tSeparated\t100\n64\tSeparated\t242\n35\tNever married\t10838\n30\tMarried\t7458\n74\tDivorced\t1893\n49\tMarried\t15731\n68\tSeparated\t154\n50\tSeparated\t717\n58\tMarried\t17959\n31\tSeparated\t317\n60\tNever married\t2238\n71\tDivorced\t2140\n97\tMarried\t179\n62\tWidow\t1054\n40\tMarried\t10600\n59\tWidow\t1162\n92\tWidow\t602\n71\tNever married\t872\n78\tMarried\t4785\n45\tDivorced\t3550\n25\tMarried\t3483\n89\tWidow\t1638\n13\tNever married\t6914\n49\tDivorced\t4974\n25\tSeparated\t144\n60\tMarried\t14434\n38\tDivorced\t1283\n90\tMarried\t291\n27\tSeparated\t150\n26\tWidow\t8\n41\tDivorced\t1998\n23\tMarried\t542\n39\tNever married\t7081\n62\tNever married\t2252\n41\tMarried\t11433\n39\tDivorced\t1973\n59\tDivorced\t4800\n66\tSeparated\t194\n41\tNever married\t7447\n70\tSeparated\t117\n62\tDivorced\t4278\n76\tDivorced\t1516\n54\tNever married\t4679\n30\tWidow\t27\n28\tDivorced\t186\n80\tDivorced\t521\n51\tSeparated\t721\n18\tNever married\t13412\n15\tWidow\t1\n78\tNever married\t403\n32\tWidow\t24\n88\tWidow\t1322\n95\tNever married\t51\n70\tNever married\t802\n92\tDivorced\t27\n42\tWidow\t89\n77\tWidow\t2282\n65\tWidow\t1589\n16\tMarried\t4\n90\tSeparated\t1\n64\tMarried\t14385\n84\tMarried\t1428\n53\tSeparated\t763\n61\tSeparated\t396\n75\tMarried\t8900\n39\tMarried\t10733\n39\tSeparated\t523\n84\tNever married\t221\n38\tWidow\t52\n42\tMarried\t11742\n36\tMarried\t11413\n34\tDivorced\t1515\n69\tNever married\t765\n57\tDivorced\t5522\n36\tNever married\t10311\n43\tSeparated\t517\n95\tMarried\t151\n44\tNever married\t6686\n74\tWidow\t4057\n78\tDivorced\t873\n25\tWidow\t11\n31\tDivorced\t707\n56\tSeparated\t631\n86\tNever married\t177\n99\tMarried\t37\n20\tDivorced\t17\n32\tSeparated\t293\n14\tMarried\t7\n36\tDivorced\t1390\n93\tNever married\t42\n68\tMarried\t8624\n35\tDivorced\t1428\n19\tWidow\t1\n64\tNever married\t1591\n58\tSeparated\t658\n33\tWidow\t33\n50\tDivorced\t4739\n96\tNever married\t44\n101\tNever married\t3\n63\tDivorced\t4007\n28\tNever married\t16284\n54\tDivorced\t5575\n71\tSeparated\t131\n52\tNever married\t5982\n47\tSeparated\t748\n93\tDivorced\t32\n50\tWidow\t411\n75\tNever married\t819\n79\tSeparated\t47\n78\tSeparated\t66\n99\tNever married\t13\n82\tMarried\t3108\n10\tNever married\t3101\n93\tMarried\t182\n46\tWidow\t190\n98\tDivorced\t21\n100\tMarried\t60\n95\tWidow\t436\n24\tNever married\t13182\n53\tDivorced\t4961\n96\tMarried\t128\n75\tDivorced\t1735\n92\tMarried\t220\n45\tMarried\t13138\n80\tMarried\t3708\n68\tNever married\t863\n9\tNever married\t3759\n37\tMarried\t10983\n32\tDivorced\t636\n76\tNever married\t697\n34\tMarried\t11435\n70\tDivorced\t1827\n91\tMarried\t274\n85\tNever married\t130\n83\tWidow\t2372\n81\tDivorced\t558\n53\tWidow\t364\n46\tSeparated\t732\n45\tWidow\t165\n73\tWidow\t1967\n60\tWidow\t1072\n66\tDivorced\t2587\n97\tNever married\t48\n19\tSeparated\t14\n99\tDivorced\t7\n35\tMarried\t11737\n49\tSeparated\t732\n50\tNever married\t6045\n79\tNever married\t473\n51\tMarried\t15803\n76\tWidow\t3460\n83\tNever married\t331\n28\tMarried\t3587\n45\tSeparated\t720\n96\tDivorced\t24\n24\tWidow\t8\n17\tMarried\t11\n54\tMarried\t17654\n36\tSeparated\t474\n24\tSeparated\t94\n53\tMarried\t16098\n97\tDivorced\t34\n77\tDivorced\t1114\n58\tDivorced\t5809\n79\tDivorced\t618\n36\tWidow\t61\n88\tNever married\t143\n49\tWidow\t371\n57\tMarried\t17854\n45\tNever married\t7049\n85\tWidow\t1318\n89\tSeparated\t5\n26\tMarried\t3871\n68\tWidow\t1061\n19\tDivorced\t16\n58\tNever married\t4655\n86\tSeparated\t5\n57\tSeparated\t628\n8\tNever married\t3225\n77\tMarried\t5632\n37\tSeparated\t485\n82\tSeparated\t27\n48\tMarried\t14281\n61\tWidow\t1109\n64\tWidow\t1822\n87\tMarried\t476\n35\tWidow\t61\n83\tMarried\t3000\n63\tMarried\t13630\n21\tNever married\t14617\n48\tWidow\t208\n38\tNever married\t9060\n56\tNever married\t4507\n49\tNever married\t6300\n51\tWidow\t348\n24\tMarried\t3032\n16\tNever married\t10953\n59\tNever married\t2553\n15\tNever married\t8849\n91\tDivorced\t42\n48\tNever married\t7498\n70\tMarried\t8647\n25\tNever married\t15995\n72\tNever married\t888\n30\tNever married\t11855\n55\tMarried\t17877\n29\tWidow\t37\n100\tDivorced\t9\n64\tDivorced\t3731\n42\tDivorced\t2185\n41\tWidow\t80\n26\tNever married\t16926\n55\tSeparated\t662\n19\tMarried\t439\n83\tDivorced\t461\n98\tMarried\t131\n37\tWidow\t64\n102\tWidow\t38\n26\tSeparated\t149\n72\tMarried\t10122\n47\tWidow\t223\n102\tMarried\t14\n70\tWidow\t1904\n43\tDivorced\t2058\n21\tDivorced\t12\n23\tWidow\t1\n62\tMarried\t14346\n59\tMarried\t16310\n59\tSeparated\t398\n69\tMarried\t8647\n100\tNever married\t16\n78\tWidow\t2083\n20\tNever married\t15553\n86\tMarried\t1133\n26\tDivorced\t167\n29\tMarried\t8537\n53\tNever married\t6356\n31\tMarried\t8859\n65\tNever married\t1400\n37\tDivorced\t1407\n23\tNever married\t17058\n67\tWidow\t1206\n84\tWidow\t2019\n88\tMarried\t957\n65\tSeparated\t255\n83\tSeparated\t26\n43\tMarried\t10713\n81\tMarried\t3406\n40\tSeparated\t584\n58\tWidow\t748\n89\tNever married\t155\n94\tNever married\t48\n27\tWidow\t11\n66\tMarried\t10660\n102\tNever married\t4\n43\tNever married\t7087\n97\tWidow\t543\n92\tNever married\t35\n98\tSeparated\t1\n52\tDivorced\t4868\n87\tNever married\t75\n56\tDivorced\t5201\n98\tWidow\t411\n81\tSeparated\t26\n52\tMarried\t15342\n41\tSeparated\t605\n99\tSeparated\t2\n33\tNever married\t13561\n90\tWidow\t859\n31\tNever married\t13863\n39\tWidow\t69\n19\tNever married\t13591\n42\tSeparated\t629\n77\tNever married\t481\n40\tWidow\t85\n14\tWidow\t1\n44\tMarried\t12603\n73\tNever married\t823\n84\tSeparated\t7\n82\tWidow\t2348\n94\tDivorced\t33\n63\tWidow\t965\n"
+            "data": "age\tms_type\tcnt\n76\tMarried\t8184\n85\tSeparated\t3\n101\tDivorced\t2\n57\tWidow\t757\n25\tDivorced\t175\n30\tSeparated\t277\n73\tDivorced\t2064\n66\tNever married\t1079\n79\tMarried\t4214\n85\tDivorced\t131\n27\tDivorced\t165\n47\tDivorced\t3744\n69\tWidow\t1819\n42\tNever married\t7790\n89\tMarried\t566\n22\tDivorced\t13\n60\tDivorced\t4166\n54\tWidow\t812\n82\tNever married\t345\n46\tNever married\t7488\n91\tWidow\t792\n98\tNever married\t31\n31\tWidow\t30\n61\tMarried\t15493\n44\tDivorced\t3435\n48\tSeparated\t756\n52\tWidow\t355\n46\tDivorced\t3745\n87\tDivorced\t70\n67\tSeparated\t166\n75\tWidow\t3793\n72\tSeparated\t138\n88\tSeparated\t2\n14\tNever married\t8372\n12\tNever married\t5077\n33\tMarried\t8432\n67\tMarried\t9462\n63\tNever married\t2157\n90\tDivorced\t44\n87\tSeparated\t3\n56\tMarried\t16941\n40\tNever married\t7126\n61\tNever married\t2523\n73\tMarried\t9019\n94\tWidow\t537\n91\tNever married\t78\n47\tMarried\t13791\n34\tNever married\t10603\n65\tDivorced\t3412\n56\tWidow\t714\n71\tWidow\t2132\n34\tWidow\t68\n20\tSeparated\t23\n50\tMarried\t15478\n74\tMarried\t9508\n99\tWidow\t139\n62\tSeparated\t323\n40\tDivorced\t1969\n74\tSeparated\t118\n22\tSeparated\t17\n87\tWidow\t686\n27\tMarried\t3903\n80\tSeparated\t40\n100\tWidow\t181\n28\tSeparated\t161\n75\tSeparated\t118\n47\tNever married\t7375\n17\tNever married\t12691\n85\tMarried\t947\n51\tNever married\t6157\n88\tDivorced\t157\n95\tDivorced\t15\n35\tSeparated\t525\n60\tSeparated\t346\n15\tMarried\t4\n44\tWidow\t197\n77\tSeparated\t64\n94\tMarried\t163\n80\tWidow\t2878\n24\tDivorced\t128\n55\tNever married\t4651\n32\tNever married\t12478\n93\tWidow\t543\n22\tMarried\t505\n33\tSeparated\t300\n101\tWidow\t49\n101\tMarried\t18\n18\tMarried\t7\n69\tDivorced\t1978\n67\tDivorced\t2469\n29\tSeparated\t377\n72\tWidow\t2329\n82\tDivorced\t472\n46\tMarried\t13844\n72\tDivorced\t2191\n32\tMarried\t7856\n61\tDivorced\t4593\n38\tSeparated\t481\n80\tNever married\t415\n23\tDivorced\t17\n55\tDivorced\t5910\n96\tWidow\t445\n48\tDivorced\t3890\n86\tDivorced\t157\n81\tWidow\t2715\n65\tMarried\t13061\n51\tDivorced\t4976\n27\tNever married\t18104\n79\tWidow\t3517\n86\tWidow\t1709\n63\tSeparated\t361\n96\tSeparated\t1\n74\tNever married\t838\n55\tWidow\t799\n11\tNever married\t4430\n81\tNever married\t388\n71\tMarried\t9363\n29\tNever married\t13331\n57\tNever married\t4653\n44\tSeparated\t669\n52\tSeparated\t721\n20\tMarried\t505\n21\tMarried\t524\n84\tDivorced\t181\n23\tSeparated\t22\n69\tSeparated\t129\n90\tNever married\t74\n43\tWidow\t81\n21\tSeparated\t19\n34\tSeparated\t538\n73\tSeparated\t112\n21\tWidow\t1\n37\tNever married\t10089\n30\tDivorced\t616\n33\tDivorced\t685\n97\tSeparated\t1\n38\tMarried\t10107\n54\tSeparated\t689\n22\tWidow\t1\n29\tDivorced\t653\n89\tDivorced\t92\n28\tWidow\t8\n68\tDivorced\t2165\n66\tWidow\t1417\n22\tNever married\t16064\n67\tNever married\t993\n76\tSeparated\t80\n64\tSeparated\t278\n30\tMarried\t7613\n74\tDivorced\t1877\n35\tNever married\t10707\n49\tMarried\t15955\n68\tSeparated\t151\n50\tSeparated\t730\n71\tDivorced\t2099\n58\tMarried\t18048\n60\tNever married\t2243\n62\tWidow\t1036\n31\tSeparated\t334\n97\tMarried\t186\n40\tMarried\t10785\n59\tWidow\t1136\n92\tWidow\t616\n71\tNever married\t862\n78\tMarried\t4805\n13\tNever married\t7003\n45\tDivorced\t3545\n89\tWidow\t1767\n25\tMarried\t3582\n49\tDivorced\t4992\n25\tSeparated\t136\n38\tDivorced\t1265\n60\tMarried\t14302\n27\tSeparated\t131\n90\tMarried\t306\n26\tWidow\t6\n41\tDivorced\t2068\n23\tMarried\t515\n41\tMarried\t11461\n39\tDivorced\t2056\n39\tNever married\t7108\n62\tNever married\t2325\n59\tDivorced\t4776\n66\tSeparated\t199\n41\tNever married\t7390\n91\tSeparated\t4\n70\tSeparated\t122\n62\tDivorced\t4218\n54\tNever married\t4721\n76\tDivorced\t1597\n30\tWidow\t27\n28\tDivorced\t169\n51\tSeparated\t796\n80\tDivorced\t560\n18\tNever married\t13490\n78\tNever married\t412\n32\tWidow\t30\n88\tWidow\t1280\n70\tNever married\t799\n42\tWidow\t95\n92\tDivorced\t25\n95\tNever married\t44\n77\tWidow\t2336\n65\tWidow\t1695\n16\tMarried\t3\n90\tSeparated\t3\n64\tMarried\t14494\n84\tMarried\t1404\n53\tSeparated\t745\n61\tSeparated\t364\n39\tMarried\t10567\n75\tMarried\t8855\n39\tSeparated\t528\n84\tNever married\t211\n38\tWidow\t49\n42\tMarried\t11719\n36\tMarried\t11296\n34\tDivorced\t1507\n69\tNever married\t780\n36\tNever married\t10342\n43\tSeparated\t515\n57\tDivorced\t5711\n95\tMarried\t141\n44\tNever married\t6704\n78\tDivorced\t975\n74\tWidow\t4098\n25\tWidow\t8\n31\tDivorced\t680\n56\tSeparated\t611\n86\tNever married\t172\n99\tMarried\t44\n20\tDivorced\t17\n32\tSeparated\t320\n14\tMarried\t5\n36\tDivorced\t1433\n93\tNever married\t57\n68\tMarried\t8454\n35\tDivorced\t1523\n19\tWidow\t2\n33\tWidow\t30\n64\tNever married\t1517\n58\tSeparated\t659\n50\tDivorced\t4810\n96\tNever married\t36\n101\tNever married\t4\n63\tDivorced\t4114\n28\tNever married\t16497\n54\tDivorced\t5655\n71\tSeparated\t132\n52\tNever married\t5963\n75\tNever married\t800\n47\tSeparated\t722\n50\tWidow\t399\n93\tDivorced\t29\n78\tSeparated\t58\n79\tSeparated\t39\n99\tNever married\t13\n82\tMarried\t2989\n10\tNever married\t3338\n93\tMarried\t193\n46\tWidow\t193\n100\tMarried\t57\n98\tDivorced\t18\n95\tWidow\t444\n24\tNever married\t13410\n53\tDivorced\t4964\n96\tMarried\t137\n75\tDivorced\t1784\n92\tMarried\t211\n45\tMarried\t13228\n80\tMarried\t3835\n68\tNever married\t948\n9\tNever married\t3766\n37\tMarried\t10933\n76\tNever married\t726\n32\tDivorced\t626\n34\tMarried\t11627\n70\tDivorced\t1916\n85\tNever married\t149\n91\tMarried\t268\n83\tWidow\t2435\n81\tDivorced\t526\n53\tWidow\t425\n46\tSeparated\t743\n45\tWidow\t182\n73\tWidow\t2067\n66\tDivorced\t2584\n60\tWidow\t1041\n97\tNever married\t45\n19\tSeparated\t17\n99\tDivorced\t8\n35\tMarried\t11982\n49\tSeparated\t779\n50\tNever married\t6131\n79\tNever married\t452\n76\tWidow\t3572\n51\tMarried\t15391\n83\tNever married\t315\n28\tMarried\t3631\n45\tSeparated\t696\n17\tMarried\t10\n96\tDivorced\t18\n24\tWidow\t4\n54\tMarried\t17647\n36\tSeparated\t482\n24\tSeparated\t106\n53\tMarried\t16013\n97\tDivorced\t29\n77\tDivorced\t1143\n58\tDivorced\t5796\n79\tDivorced\t658\n36\tWidow\t50\n88\tNever married\t154\n49\tWidow\t398\n57\tMarried\t17863\n85\tWidow\t1378\n45\tNever married\t7090\n89\tSeparated\t1\n26\tMarried\t3868\n68\tWidow\t1079\n19\tDivorced\t12\n58\tNever married\t4728\n86\tSeparated\t10\n8\tNever married\t3259\n77\tMarried\t5596\n57\tSeparated\t589\n37\tSeparated\t502\n82\tSeparated\t28\n48\tMarried\t14329\n87\tMarried\t472\n64\tWidow\t1775\n61\tWidow\t1092\n35\tWidow\t66\n83\tMarried\t2990\n21\tNever married\t14857\n63\tMarried\t13516\n48\tWidow\t198\n49\tNever married\t6115\n38\tNever married\t9164\n56\tNever married\t4484\n51\tWidow\t360\n24\tMarried\t3021\n16\tNever married\t10944\n59\tNever married\t2652\n15\tNever married\t8905\n91\tDivorced\t57\n48\tNever married\t7568\n94\tSeparated\t3\n70\tMarried\t8689\n25\tNever married\t15899\n72\tNever married\t915\n55\tMarried\t18115\n30\tNever married\t11908\n29\tWidow\t30\n100\tDivorced\t10\n64\tDivorced\t3635\n42\tDivorced\t2205\n41\tWidow\t105\n26\tNever married\t16992\n19\tMarried\t511\n83\tDivorced\t453\n55\tSeparated\t701\n98\tMarried\t146\n37\tWidow\t59\n102\tWidow\t39\n26\tSeparated\t157\n72\tMarried\t10358\n47\tWidow\t196\n102\tMarried\t15\n70\tWidow\t1977\n43\tDivorced\t2168\n23\tWidow\t1\n21\tDivorced\t8\n62\tMarried\t14383\n59\tMarried\t16549\n59\tSeparated\t411\n69\tMarried\t8526\n100\tNever married\t19\n95\tSeparated\t2\n78\tWidow\t2059\n20\tNever married\t15351\n86\tMarried\t1202\n26\tDivorced\t173\n31\tMarried\t8680\n29\tMarried\t8616\n53\tNever married\t6327\n65\tNever married\t1354\n93\tSeparated\t3\n37\tDivorced\t1370\n23\tNever married\t17255\n67\tWidow\t1247\n83\tSeparated\t35\n84\tWidow\t2008\n88\tMarried\t935\n65\tSeparated\t246\n43\tMarried\t10718\n81\tMarried\t3294\n58\tWidow\t789\n40\tSeparated\t563\n89\tNever married\t160\n94\tNever married\t57\n27\tWidow\t12\n66\tMarried\t10564\n102\tNever married\t1\n43\tNever married\t7027\n97\tWidow\t579\n92\tNever married\t53\n98\tSeparated\t1\n52\tDivorced\t4834\n87\tNever married\t73\n56\tDivorced\t5446\n98\tWidow\t450\n81\tSeparated\t23\n52\tMarried\t15345\n41\tSeparated\t619\n33\tNever married\t13493\n90\tWidow\t849\n31\tNever married\t13738\n39\tWidow\t69\n20\tWidow\t1\n19\tNever married\t13576\n77\tNever married\t519\n42\tSeparated\t594\n40\tWidow\t78\n16\tDivorced\t1\n44\tMarried\t12736\n73\tNever married\t820\n84\tSeparated\t7\n82\tWidow\t2465\n94\tDivorced\t27\n63\tWidow\t937\n"
           }
         ]
       },
@@ -588,11 +588,11 @@
           "tooltip": "View in Spark web UI",
           "group": "spark",
           "values": [
-            "http://172.18.0.3:4040/jobs/job?id\u003d9",
-            "http://172.18.0.3:4040/jobs/job?id\u003d10",
-            "http://172.18.0.3:4040/jobs/job?id\u003d11",
-            "http://172.18.0.3:4040/jobs/job?id\u003d12",
-            "http://172.18.0.3:4040/jobs/job?id\u003d13"
+            "http://172.18.0.3:4040/jobs/job?id\u003d2",
+            "http://172.18.0.3:4040/jobs/job?id\u003d3",
+            "http://172.18.0.3:4040/jobs/job?id\u003d4",
+            "http://172.18.0.3:4040/jobs/job?id\u003d5",
+            "http://172.18.0.3:4040/jobs/job?id\u003d6"
           ],
           "interpreterSettingId": "spark"
         }
@@ -601,15 +601,15 @@
       "jobName": "paragraph_1532699666861_-1684096974",
       "id": "20180727-135426_1794137245",
       "dateCreated": "2018-07-27 13:54:26.861",
-      "dateStarted": "2018-07-30 16:34:22.914",
-      "dateFinished": "2018-07-30 16:34:26.698",
+      "dateStarted": "2018-07-31 16:25:06.278",
+      "dateFinished": "2018-07-31 16:25:10.224",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "df.createOrReplaceTempView(\"transactions\")\nval pushdown_query\u003d\"(select c.*, ms.ms_type FROM customers c INNER JOIN maritalstatuses ms on ms.ms_id\u003dc.ms_id) as q\"\nval df \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\n//df.show()",
+      "text": "\nval pushdown_query\u003d\"(select c.*, ms.ms_type FROM customers c INNER JOIN maritalstatuses ms on ms.ms_id\u003dc.ms_id) as q\"\nval df_transactions \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\ndf_transactions.createOrReplaceTempView(\"transactions\")\ndf_transactions.printSchema()",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:34:26.782",
+      "dateUpdated": "2018-07-31 16:25:10.239",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -630,11 +630,11 @@
         "forms": {}
       },
       "results": {
-        "code": "ERROR",
+        "code": "SUCCESS",
         "msg": [
           {
             "type": "TEXT",
-            "data": "\u003cconsole\u003e:28: error: not found: value df\n       df.createOrReplaceTempView(\"transactions\")\n       ^\n"
+            "data": "pushdown_query: String \u003d (select c.*, ms.ms_type FROM customers c INNER JOIN maritalstatuses ms on ms.ms_id\u003dc.ms_id) as q\ndf_transactions: org.apache.spark.sql.DataFrame \u003d [customer_nm: string, customer_id: decimal(20,0) ... 5 more fields]\nroot\n |-- customer_nm: string (nullable \u003d false)\n |-- customer_id: decimal(20,0) (nullable \u003d false)\n |-- customer_username_nm: string (nullable \u003d false)\n |-- sex: string (nullable \u003d false)\n |-- age: integer (nullable \u003d false)\n |-- ms_id: integer (nullable \u003d false)\n |-- ms_type: string (nullable \u003d false)\n\n"
           }
         ]
       },
@@ -642,15 +642,15 @@
       "jobName": "paragraph_1532955627496_-1708548529",
       "id": "20180730-130027_435768735",
       "dateCreated": "2018-07-30 13:00:27.496",
-      "dateStarted": "2018-07-30 16:34:26.847",
-      "dateFinished": "2018-07-30 16:34:26.878",
-      "status": "ERROR",
+      "dateStarted": "2018-07-31 16:25:10.393",
+      "dateFinished": "2018-07-31 16:25:11.481",
+      "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark\nval pushdown_query \u003d \"(SELECT count(t.order_id) orders, SUM(t.price), SUM(t.discounted_price) Amount, t.customer_id,  c.customer_nm, c.sex, c.age, ms.ms_type FROM transactions as t INNER JOIN customers c ON c.customer_id \u003d t.customer_id INNER JOIN maritalstatuses ms ON ms.ms_id \u003d c.ms_id GROUP BY  t.customer_id, c.customer_nm, c.sex, c.age, ms.ms_type ORDER BY orders desc) as t\"\nval df_orders \u003d spark.read.jdbc(url\u003djdbcUrl, table\u003dpushdown_query, properties\u003dconnectionProperties)\ndf_orders.createOrReplaceTempView(\"transactions\")\ndf_orders.printSchema()",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:09:06.911",
+      "dateUpdated": "2018-07-31 16:25:11.519",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -683,15 +683,15 @@
       "jobName": "paragraph_1532746663256_-81220370",
       "id": "20180728-025743_1812333124",
       "dateCreated": "2018-07-28 02:57:43.256",
-      "dateStarted": "2018-07-30 16:07:13.028",
-      "dateFinished": "2018-07-30 16:07:13.544",
+      "dateStarted": "2018-07-31 16:25:11.613",
+      "dateFinished": "2018-07-31 16:25:12.518",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "//You can make user-defined function (UDF)and use it in a query\ndef sexName(s:String) : String \u003d {\n    if(s.toUpperCase\u003d\u003d\u0027M\u0027.toString.toUpperCase)\n        \"Male\"\n    else\n        \"Female\"\n}\nsqlcontext.udf.register(\"sexName\", sexName _)",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:08:58.331",
+      "dateUpdated": "2018-07-31 16:25:12.613",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -716,7 +716,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "sexName: (s: String)String\nres671: org.apache.spark.sql.expressions.UserDefinedFunction \u003d UserDefinedFunction(\u003cfunction1\u003e,StringType,Some(List(StringType)))\n"
+            "data": "sexName: (s: String)String\nres24: org.apache.spark.sql.expressions.UserDefinedFunction \u003d UserDefinedFunction(\u003cfunction1\u003e,StringType,Some(List(StringType)))\n"
           }
         ]
       },
@@ -724,8 +724,8 @@
       "jobName": "paragraph_1532957998578_-1253669420",
       "id": "20180730-133958_693272741",
       "dateCreated": "2018-07-30 13:39:58.578",
-      "dateStarted": "2018-07-30 16:07:13.653",
-      "dateFinished": "2018-07-30 16:07:14.024",
+      "dateStarted": "2018-07-31 16:25:12.710",
+      "dateFinished": "2018-07-31 16:25:14.774",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -733,7 +733,7 @@
       "title": "Order Distribution by Age",
       "text": "%sql\nSELECT age,sum(orders) as Orders, AVG(amount) as `Car Amount` FROM transactions group by age\n",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 18:21:36.339",
+      "dateUpdated": "2018-07-31 16:26:23.850",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -832,24 +832,40 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "age\tOrders\tCar Amount\n31\t256615\t108.054518\n85\t28115\t111.009324\n65\t216249\t109.357146\n53\t311344\t108.824809\n78\t89687\t109.354163\n34\t261863\t109.129815\n101\t646\t108.296316\n81\t77010\t109.869645\n28\t220414\t108.740325\n76\t152315\t110.364071\n26\t232202\t109.784235\n27\t242559\t110.038239\n44\t255922\t108.862632\n12\t57004\t109.942923\n91\t13095\t108.710223\n22\t179590\t109.511365\n93\t8984\t108.206831\n47\t287385\t109.044142\n52\t298312\t109.113390\n13\t77478\t111.541639\n86\t33899\t109.648980\n16\t119776\t109.275152\n20\t177226\t109.654455\n40\t224280\t109.872356\n94\t8235\t108.946184\n57\t323458\t109.796256\n54\t322582\t110.361386\n96\t7013\t109.540902\n48\t292327\t109.494817\n19\t153290\t109.109824\n92\t9762\t109.226599\n64\t240811\t110.556012\n41\t237632\t110.163150\n43\t224112\t109.392474\n15\t96181\t108.785575\n37\t251455\t109.931260\n61\t264717\t109.375535\n88\t28489\t110.919722\n17\t138916\t109.955326\n9\t41724\t111.236669\n72\t171076\t108.714030\n35\t272316\t110.581818\n55\t327528\t110.339271\n59\t274355\t108.809596\n8\t35644\t111.788189\n100\t2932\t114.938532\n23\t192619\t109.049732\n39\t222352\t109.183629\n49\t306998\t108.936457\n84\t41758\t108.419595\n87\t14428\t111.284741\n51\t309557\t109.707270\n69\t147741\t110.058403\n97\t8632\t106.491143\n63\t232680\t110.363510\n77\t105169\t109.985260\n10\t34763\t112.400942\n102\t639\t107.021724\n50\t297305\t109.263707\n45\t269580\t109.268345\n38\t229374\t109.864890\n82\t69833\t110.865474\n80\t82763\t110.368406\n73\t150492\t108.303528\n25\t216911\t109.244701\n24\t180104\t109.287500\n70\t143995\t108.318645\n62\t244359\t109.592500\n95\t7054\t107.439878\n29\t250536\t109.486123\n21\t164806\t108.657874\n98\t6736\t111.603294\n60\t246263\t110.340224\n32\t225925\t109.128489\n90\t13961\t108.939016\n75\t167845\t109.574073\n56\t304638\t109.427880\n58\t327800\t109.648705\n33\t253506\t109.672608\n11\t49232\t110.579425\n83\t68715\t110.695585\n68\t139783\t108.735829\n71\t159656\t109.148075\n14\t90333\t109.579618\n42\t245842\t109.706714\n79\t95820\t108.537963\n30\t224042\t110.883082\n99\t2015\t110.119947\n66\t174585\t109.737337\n46\t277821\t109.256196\n67\t153923\t109.955295\n18\t147612\t109.695642\n74\t181455\t109.993622\n36\t261419\t110.393438\n89\t27876\t110.616996\n"
+            "data": "age\tOrders\tCar Amount\n31\t258189\t110.426672\n85\t28339\t109.245483\n65\t213590\t107.977975\n53\t311613\t109.532643\n78\t91349\t109.678472\n34\t266101\t109.256208\n101\t731\t97.183699\n81\t77823\t111.625726\n28\t223862\t109.666422\n76\t154585\t108.955496\n26\t230454\t108.774298\n27\t246775\t110.242307\n44\t260651\t110.121438\n12\t55054\t108.346106\n91\t13011\t108.453912\n22\t183822\t110.717939\n93\t8916\t106.408364\n47\t283160\t109.685331\n52\t299175\t109.776391\n13\t77782\t111.419237\n16\t119767\t109.486408\n86\t37076\t113.650375\n40\t227437\t111.372979\n20\t175937\t110.916416\n94\t8893\t113.694028\n57\t322914\t109.153744\n54\t324875\t110.140151\n96\t6918\t108.222732\n48\t294021\t109.963035\n19\t154690\t109.523848\n92\t9800\t109.044972\n64\t238872\t109.772845\n41\t237123\t109.387804\n43\t226342\t110.255503\n15\t97278\t109.372248\n37\t251643\t109.606736\n61\t262081\t108.941974\n88\t27947\t111.015914\n9\t40655\t107.272905\n17\t139920\t110.571712\n72\t174910\t109.790851\n35\t272544\t109.836760\n55\t329192\t109.449085\n59\t279749\t109.783626\n8\t36343\t110.713694\n100\t2958\t112.113408\n23\t195914\t110.203204\n39\t221609\t109.014315\n49\t310118\t109.752787\n84\t42050\t111.280897\n87\t14167\t107.801342\n51\t304085\t109.744762\n69\t147369\t111.471845\n97\t9359\t111.548262\n63\t231508\t109.899034\n10\t37250\t110.479275\n77\t105192\t109.603292\n102\t555\t96.835636\n50\t300648\t109.239340\n45\t273353\t110.788388\n38\t230728\t109.524988\n82\t70349\t111.689286\n80\t84215\t108.939959\n25\t216396\t109.607295\n73\t156336\t111.018028\n24\t181667\t109.090514\n70\t148328\t109.809071\n62\t244897\t109.688692\n95\t7193\t112.581734\n29\t252975\t110.003980\n21\t168530\t109.541003\n98\t6860\t106.956099\n60\t244601\t110.853699\n32\t235545\t110.374900\n90\t14496\t113.646654\n75\t167541\t109.027023\n56\t310143\t109.927605\n58\t328017\t109.232302\n33\t252221\t110.221214\n11\t47978\t107.337774\n83\t68989\t110.844001\n68\t140953\t110.508847\n71\t161058\t110.410287\n14\t91483\t109.013542\n42\t246015\t109.936468\n79\t98333\t110.749985\n30\t224672\t109.783839\n99\t2670\t128.273480\n66\t175350\t111.002098\n67\t155655\t108.667147\n46\t285284\t109.585305\n18\t148214\t109.896904\n74\t179229\t108.841351\n36\t260462\t110.514690\n89\t28321\t109.419462\n"
           }
         ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d7",
+            "http://172.18.0.3:4040/jobs/job?id\u003d8",
+            "http://172.18.0.3:4040/jobs/job?id\u003d9",
+            "http://172.18.0.3:4040/jobs/job?id\u003d10",
+            "http://172.18.0.3:4040/jobs/job?id\u003d11"
+          ],
+          "interpreterSettingId": "spark"
+        }
       },
       "apps": [],
       "jobName": "paragraph_1532746601913_1679550802",
       "id": "20180728-025641_1739767145",
       "dateCreated": "2018-07-28 02:56:41.913",
-      "dateStarted": "2018-07-30 16:07:14.077",
-      "dateFinished": "2018-07-30 16:07:31.134",
+      "dateStarted": "2018-07-31 16:25:15.104",
+      "dateFinished": "2018-07-31 16:25:39.618",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "Orders Distribution by Sex",
-      "text": "%sql\nSELECT SUM(orders) as Orders, sexname(sex) FROM transactions group by sexName(sex)\n",
+      "text": "%sql\nSELECT SUM(orders) as Orders, sexname(sex) Sex FROM transactions group by sexName(sex)  ORDER by Sex\n",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:08:15.464",
+      "dateUpdated": "2018-07-31 16:25:39.642",
       "config": {
         "colWidth": 6.0,
         "fontSize": 9.0,
@@ -887,7 +903,7 @@
               "commonSetting": {},
               "keys": [
                 {
-                  "name": "UDF:sexName(sex)",
+                  "name": "Sex",
                   "index": 1.0,
                   "aggr": "sum"
                 }
@@ -912,7 +928,8 @@
         },
         "editorMode": "ace/mode/sql",
         "title": true,
-        "editorHide": true
+        "editorHide": true,
+        "tableHide": false
       },
       "settings": {
         "params": {},
@@ -923,24 +940,36 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "Orders\tUDF:sexName(sex)\n7650677\tFemale\n7667099\tMale\n"
+            "data": "Orders\tSex\n8004292\tFemale\n7409456\tMale\n"
           }
         ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d12"
+          ],
+          "interpreterSettingId": "spark"
+        }
       },
       "apps": [],
       "jobName": "paragraph_1532957696883_-656775348",
       "id": "20180730-133456_361425748",
       "dateCreated": "2018-07-30 13:34:56.883",
-      "dateStarted": "2018-07-30 16:07:31.239",
-      "dateFinished": "2018-07-30 16:07:45.103",
+      "dateStarted": "2018-07-31 16:25:39.930",
+      "dateFinished": "2018-07-31 16:25:56.642",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "Top Buyers Distribution by Sex",
-      "text": "%sql\nSELECT max(orders) as Orders, customer_nm, sexname(sex), age, ms_type  FROM transactions group by customer_nm, sexname(sex), age, ms_type order by Orders desc limit 10\n",
+      "text": "%sql\nSELECT * FROM (SELECT max(orders) as Orders, customer_nm, sexname(sex) as Sex, age, ms_type  FROM transactions group by customer_nm, Sex, age, ms_type order by Orders desc limit 10) x order by x.Sex\n",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:08:24.313",
+      "dateUpdated": "2018-07-31 16:25:56.657",
       "config": {
         "colWidth": 6.0,
         "fontSize": 9.0,
@@ -958,7 +987,7 @@
                     "names": {
                       "Orders": "string",
                       "customer_nm": "string",
-                      "sex": "string",
+                      "Sex": "string",
                       "age": "string",
                       "ms_type": "string"
                     },
@@ -980,12 +1009,19 @@
                   "xLabelStatus": "hide",
                   "stacked": true
                 },
-                "pieChart": {}
+                "pieChart": {},
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "style": "stream"
+                }
               },
               "commonSetting": {},
               "keys": [
                 {
-                  "name": "UDF:sexName(sex)",
+                  "name": "Sex",
                   "index": 2.0,
                   "aggr": "sum"
                 }
@@ -1022,23 +1058,35 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "Orders\tcustomer_nm\tUDF:sexName(sex)\tage\tms_type\n141\tPatricia Anderson\tFemale\t53\tMarried\n134\tEmma Petty\tFemale\t64\tMarried\n123\tAnthony Pitts\tMale\t54\tMarried\n122\tMegan Jennings\tFemale\t28\tNever married\n119\tLee Johnson\tMale\t52\tNever married\n119\tBrandon Smith\tMale\t18\tNever married\n118\tMatthew Cunningham\tMale\t45\tNever married\n114\tEarl Weeks\tMale\t31\tMarried\n114\tRobert Wright\tMale\t77\tDivorced\n113\tMonica Abbott\tFemale\t52\tMarried\n"
+            "data": "Orders\tcustomer_nm\tSex\tage\tms_type\n121\tJessica Turner\tFemale\t49\tMarried\n126\tCarol Anderson\tFemale\t35\tMarried\n118\tShannon Ferguson\tFemale\t36\tMarried\n122\tStacy Moore\tFemale\t78\tMarried\n117\tBriana Brown\tFemale\t45\tMarried\n143\tRonald Johnson\tMale\t26\tMarried\n132\tGregory Beasley\tMale\t45\tMarried\n138\tRyan Estrada\tMale\t33\tNever married\n122\tPatrick Wright\tMale\t61\tNever married\n116\tJohnny Williams\tMale\t36\tNever married\n"
           }
         ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://172.18.0.3:4040/jobs/job?id\u003d13"
+          ],
+          "interpreterSettingId": "spark"
+        }
       },
       "apps": [],
       "jobName": "paragraph_1532955045009_1426871634",
       "id": "20180730-125045_1914095396",
       "dateCreated": "2018-07-30 12:50:45.009",
-      "dateStarted": "2018-07-30 16:07:45.179",
-      "dateFinished": "2018-07-30 16:08:02.243",
+      "dateStarted": "2018-07-31 16:25:56.802",
+      "dateFinished": "2018-07-31 16:26:23.175",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%sql\n",
       "user": "anonymous",
-      "dateUpdated": "2018-07-30 16:08:29.599",
+      "dateUpdated": "2018-07-31 16:26:23.249",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -1069,7 +1117,6 @@
   "noteParams": {},
   "noteForms": {},
   "angularObjects": {
-    "md:shared_process": [],
     "spark:shared_process": []
   },
   "config": {

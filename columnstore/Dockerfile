@@ -26,8 +26,11 @@ COPY dbinit /usr/sbin/
 
 COPY bookstore /tmp/bookstore
 RUN chmod 755 /tmp/bookstore/init.sh
-RUN sed -i 's/%CSV%/\/tmp\/bookstore\/csv\//g' /tmp/bookstore/sql/load_ax_template.sql
-RUN sed -i 's/%DB%/bookstore/g' /tmp/bookstore/sql/load_ax_template.sql
+RUN mkdir -p /tmp/bookstore/csv
+RUN curl https://dl.dropboxusercontent.com/s/ovt4bhaligvsutg/fmc4.tar.gz?dl=1 --output /tmp/bookstore/csv/bookstore.tar.gz
+RUN tar -vxzf /tmp/bookstore/csv/bookstore.tar.gz --directory /tmp/bookstore/csv/
+RUN sed -i 's/%CSV%/\/tmp\/bookstore\/csv\//g' /tmp/bookstore/csv/load_ax_template.sql
+RUN sed -i 's/%DB%/bookstore/g' /tmp/bookstore/csv/load_ax_template.sql
 
 RUN chmod 755 /etc/service/*/run /etc/service/*/finish /usr/sbin/runit_bootstrap && \
     mkdir -p /var/log/mariadb/columnstore && \
