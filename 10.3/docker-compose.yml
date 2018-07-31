@@ -1,0 +1,20 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  server:
+    hostname: server
+    build: .
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "secret_pass"
+      MYSQL_ROOT_HOST: "172.20.0.1"
+
+  adminer:
+    hostname: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080 
