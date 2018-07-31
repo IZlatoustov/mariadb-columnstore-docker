@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Getting the bookstore data ..."
-#curl https://dl.dropboxusercontent.com/s/ocf1v6qz9ejga3t/fmc.tar.gz?dl=1 --output /tmp/bookstore/csv/bookstore.tar.gz
+mkdir -p /tmp/bookstore/csv
 curl https://dl.dropboxusercontent.com/s/0z1iwdkw42cvr3d/fmc2.tar.gz?dl=1 --output /tmp/bookstore/csv/bookstore.tar.gz
 echo "Extracting bookstore files ..."
 tar -vxzf /tmp/bookstore/csv/bookstore.tar.gz --directory /tmp/bookstore/csv/
