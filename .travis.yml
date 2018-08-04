@@ -1,6 +1,6 @@
 language: bash
 services: docker
-  matrix:
+matrix:
   include:
     - env:
         VERSION=columnstore
@@ -31,9 +31,8 @@ before_script:
 
 script:
   - if [ "$TYPE" = "docker" ]; then travis_retry docker build -t "$image" .; ~/mariadb-docker-images/test/run.sh "$image"; fi
-  - if [ "$TYPE" = "docker-compose" ]; then travis_retry docker-compose up --build; fi
+  - if [ "$TYPE" = "docker-compose" ]; then travis_retry docker-compose up --build;; ~/mariadb-docker-images/test/run.sh "$image"; fi
 
 after_script:
   - if [ "$TYPE" = "docker" ]; then docker images; fi
   - if [ "$TYPE" = "docker-compose" ]; then docker-compose images; fi
-  - docker images
