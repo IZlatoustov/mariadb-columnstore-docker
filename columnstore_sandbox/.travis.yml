@@ -1,16 +1,16 @@
 language: bash
 services: docker
 env:
-  - FROM=mariadb/columnstore
+  - TAG=mariadb/columnstore
+  - LOCATION=../columnstore
   - VERSION=columnstore_sandbox
 
 
 install:
   - git clone https://github.com/mariadb-corporation/mariadb-docker-images ~/mariadb-docker-images
-  - git clone https://github.com/mariadb-corporation/mariadb-columnstore-docker ~/mariadb-columnstore-docker
 
 before_script:
-  - travis_retry docker build -t "$from" ~/mariadb-columnstore-docker/columnstore
+  - docker build -t "$from" ../columnstore
   - env | sort
   - cd "$VERSION"
   - image="mariadb-columnstore-docker:$VERSION"
