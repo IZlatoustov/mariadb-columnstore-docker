@@ -2,14 +2,10 @@ language: bash
 services: docker
 env:
   - VERSION=columnstore
-  - TYPE=docker-compose
 #  - VERSION=columnstore_jupyter #broken
-  - VERSION=columnstore_sandbox
-  - TYPE=docker
+#  - VERSION=columnstore_sandbox
   - VERSION=columnstore_zeppelin
-  - TYPE=docker-compose
-  - VERSION=tx_sandbox
-  - TYPE=docker
+#  - VERSION=tx_sandbox
 
 install:
   - git clone https://github.com/mariadb-corporation/mariadb-docker-images ~/mariadb-docker-images
@@ -18,13 +14,9 @@ before_script:
   - env | sort
   - cd "$VERSION"
   - image="mariadb-columnstore-docker:$VERSION"
-  - if [ "$TYPE" = "docker" ]; then echo "docker build"; fi
-  - if [ "$TYPE" = "docker-compose" ]; then echo "docker-compose build"; fi
-
 
 script:
-  - if [ "$TYPE" = "docker" ]; then travis_retry docker build -t "$image" .; ~/mariadb-docker-images/test/run.sh "$image"; fi
-  - if [ "$TYPE" = "docker-compose" ]; then travis_retry docker-compose up --build; fi
+  - travis_retry docker-compose up --build
 
 after_script:
-  - docker images
+  - docker-compose images
