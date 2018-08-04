@@ -18,8 +18,8 @@ before_script:
   - env | sort
   - cd "$VERSION"
   - image="mariadb-columnstore-docker:$VERSION"
-  - if [ "$TYPE" = "docker" ]; echo "docker build"; fi
-  - if [ "$TYPE" = "docker-compose" ]; echo "docker-compose build" fi
+  - if [ "$TYPE" = "docker" ]; then echo "docker build"; fi
+  - if [ "$TYPE" = "docker-compose" ]; then echo "docker-compose build"; fi
 
 
 script:
