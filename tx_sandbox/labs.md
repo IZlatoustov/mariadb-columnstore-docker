@@ -1,8 +1,32 @@
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+* [Bookstore TX Sandbox](#bookstore-tx-sandbox)
+	* [Overview](#overview)
+	* [Online Bookstore Data](#online-bookstore-data)
+	* [System Info](#system-info)
+* [Labs](#labs)
+	* [General](#general)
+	* [Books](#books)
+		* [**Q:**  How many books do we sell?](#q-how-many-books-do-we-sell)
+		* [**Q:** Lets try to find out who is the youngest customer.](#q-lets-try-to-find-out-who-is-the-youngest-customer)
+		* [**Q:** Is this the youngest customer ?](#q-is-this-the-youngest-customer)
+		* [**Q:** We are trying to position our online bookstore towards Fantasy and Sci-Fi theme, but we are also trying to provide good variety of books as well.](#q-we-are-trying-to-position-our-online-bookstore-towards-fantasy-and-sci-fi-theme-but-we-are-also-trying-to-provide-good-variety-of-books-as-well)
+		* [**Q:** Are we making good profit from our focus categories ?](#q-are-we-making-good-profit-from-our-focus-categories)
+		* [**Q:** Do we provide enough variety ?](#q-do-we-provide-enough-variety)
+	* [Customers](#customers)
+		* [**Q:** Who is our customer ?](#q-who-is-our-customer)
+		* [**Q:** How many customers are male and how many are female?](#q-how-many-customers-are-male-and-how-many-are-female)
+		* [**Q:** Query Top Buyers](#q-query-top-buyers)
+		* [**Q:**  But do the younger people read more than seniores ?](#q-but-do-the-younger-people-read-more-than-seniores)
+		* [**Q:** What are the reading preferencess of our top customer?](#q-what-are-the-reading-preferencess-of-our-top-customer)
+
+<!-- /code_chunk_output -->
+
 ## Bookstore TX Sandbox
 
 ### Overview
-
 
 ### Online Bookstore Data
 
@@ -420,7 +444,7 @@ How much they buy?
 How much they spend?
 What do they buy?
 
-##### **Q:**Query Top Buyers
+#### **Q:** Query Top Buyers
 
 ```sql
 SELECT
