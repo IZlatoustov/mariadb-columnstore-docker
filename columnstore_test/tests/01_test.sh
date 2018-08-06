@@ -1,0 +1,1 @@
+mysql -u zeppelin_user -p zeppelin_pass < "SELECT count(*) FROM bookstore.books;"
