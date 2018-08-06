@@ -123,7 +123,7 @@ Did we achieve those goals?
 ```sql
 SELECT category, COUNT(*) as books FROM bookstore.books GROUP BY category;
 ```
-The ```GROUP BY`` statement instructs the database to grup the results by the first column
+The **GROUP BY** statement instructs the database to grup the results by the first column
 The Result:
 ```
 +-------------------+-------+
@@ -142,7 +142,7 @@ The Result:
 +-------------------+-------+
 ```
 The most orders we have from the group of 49-58 years old.As you can tell we are well stoked on Fantasy and Sci-Fi books. As required by our target audience.
-Now lYou can try to use the `GROUP BY` with index for the same result
+Now lYou can try to use the **GROUP BY** with index for the same result
 
 ```sql
 SELECT category, COUNT(*) as books FROM bookstore.books GROUP BY 1;
@@ -158,7 +158,7 @@ Lets asume that the higher the price the more profit we make.
 ```sql
 SELECT category, AVG(cover_price) as projected_profitabilit FROM bookstore.books GROUP BY 1;
 ```
-As you can see the the `COUNT(*)` is replaced by `AVG(cover_price)` this will return the average cover price grouped by first column i.e. in each book category.
+As you can see the the **COUNT(*)** is replaced by **AVG(cover_price)** this will return the average cover price grouped by first column i.e. in each book category.
 
 ```
 +-------------------+------------------------+
@@ -192,7 +192,7 @@ In this section we will try to identify who our customers are ? what are their p
 Lets try to make a demographical profile of our customers.
 
 #### **Q:** Who is our customer ?
-The customers are stored in ```bookstore.customers``` 
+The customers are stored in **bookstore.customers** 
 ```sql
 select  * from bookstore.customers LIMIT 10;
 ```
@@ -414,7 +414,8 @@ ORDER BY cust.age;
 +-----+----------+
 ```
 The most orders we have from the group of 49-58 years old.It is clear that our customers are mostly between 25 and 65 years old with clear peak around age of 55. 
-Now l#### **Q:** How are they disctriburted by maritial statsus ?
+
+#### **Q:** How are they disctriburted by maritial statsus ?
 ```sql 
 SELECT
 	ms.ms_type,

@@ -318,7 +318,7 @@ Lets start by answering our first question.</p>
 
 <p>Did we achieve those goals?</p>
 <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> category<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> books <span class="token keyword">FROM</span> bookstore<span class="token punctuation">.</span>books <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> category<span class="token punctuation">;</span>
-</pre><p>The ```GROUP BY`` statement instructs the database to grup the results by the first column<br>
+</pre><p>The <strong>GROUP BY</strong> statement instructs the database to grup the results by the first column<br>
 The Result:</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>+-------------------+-------+
 | category          | books |
@@ -335,7 +335,7 @@ The Result:</p>
 | Humor             |   266 |
 +-------------------+-------+
 </code></pre><p>The most orders we have from the group of 49-58 years <a href="http://old.As">old.As</a> you can tell we are well stoked on Fantasy and Sci-Fi books. As required by our target audience.<br>
-Now lYou can try to use the <code>GROUP BY</code> with index for the same result</p>
+Now lYou can try to use the <strong>GROUP BY</strong> with index for the same result</p>
 <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> category<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> books <span class="token keyword">FROM</span> bookstore<span class="token punctuation">.</span>books <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token number">1</span><span class="token punctuation">;</span>
 </pre><p>Will yeald the same result.</p>
 <p>Now lets try something more tangable. Money.</p>
@@ -343,7 +343,7 @@ Now lYou can try to use the <code>GROUP BY</code> with index for the same result
 
 <p>Lets asume that the higher the price the more profit we make.</p>
 <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span> category<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>cover_price<span class="token punctuation">)</span> <span class="token keyword">as</span> projected_profitabilit <span class="token keyword">FROM</span> bookstore<span class="token punctuation">.</span>books <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token number">1</span><span class="token punctuation">;</span>
-</pre><p>As you can see the the <code>COUNT(*)</code> is replaced by <code>AVG(cover_price)</code> this will return the average cover price grouped by first column i.e. in each book category.</p>
+</pre><p>As you can see the the <strong>COUNT(*)</strong> is replaced by <strong>AVG(cover_price)</strong> this will return the average cover price grouped by first column i.e. in each book category.</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>+-------------------+------------------------+
 | category          | projected_profitabilit |
 +-------------------+------------------------+
@@ -371,7 +371,7 @@ Now lIt looks like the classics sell quite high maybe we should target selling m
 <p>Lets try to make a demographical profile of our customers.</p>
 <h4 class="mume-header" id="q-who-is-our-customer"><strong>Q:</strong> Who is our customer ?</h4>
 
-<p>The customers are stored in <code>bookstore.customers</code></p>
+<p>The customers are stored in <strong>bookstore.customers</strong></p>
 <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">select</span>  <span class="token operator">*</span> <span class="token keyword">from</span> bookstore<span class="token punctuation">.</span>customers <span class="token keyword">LIMIT</span> <span class="token number">10</span><span class="token punctuation">;</span>
 </pre><p>The query will give use what we have in this table The <em>LIMIT 10</em> statement will limit the results to  10, we only want to see a sample of the sata not the all 1.4 milion customers.</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>+---------------------+-------------+----------------------------+-----+-----+-------+
@@ -566,8 +566,9 @@ In addition we had to write the full name of those columns <strong>bookstore.cus
 | 101 |       73 |
 | 102 |       55 |
 +-----+----------+
-</code></pre><p>The most orders we have from the group of 49-58 years <a href="http://old.It">old.It</a> is clear that our customers are mostly between 25 and 65 years old with clear peak around age of 55.<br>
-Now l#### <strong>Q:</strong> How are they disctriburted by maritial statsus ?</p>
+</code></pre><p>The most orders we have from the group of 49-58 years <a href="http://old.It">old.It</a> is clear that our customers are mostly between 25 and 65 years old with clear peak around age of 55.</p>
+<h4 class="mume-header" id="q-how-are-they-disctriburted-by-maritial-statsus"><strong>Q:</strong> How are they disctriburted by maritial statsus ?</h4>
+
 <pre data-role="codeBlock" data-info="sql" class="language-sql"><span class="token keyword">SELECT</span>
 	ms<span class="token punctuation">.</span>ms_type<span class="token punctuation">,</span>
 	<span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
