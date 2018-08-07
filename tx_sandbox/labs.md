@@ -2,22 +2,22 @@
 
 <!-- code_chunk_output -->
 
-* [Bookstore TX Sandbox](#bookstore-tx-sandbox)
+* [Bookstore TX Sandbox](#Bookstore-tx-sandbox)
 	* [Overview](#overview)
-	* [Online Bookstore Data](#online-bookstore-data)
+	* [Online Bookstore Data](#online-Bookstore-data)
 	* [System Info](#system-info)
 * [Labs](#labs)
 	* [General](#general)
-	* [Books](#books)
-		* [**Q:**  How many books do we sell?](#q-how-many-books-do-we-sell)
+	* [Books](#Books)
+		* [**Q:**  How many Books do we sell?](#q-how-many-Books-do-we-sell)
 		* [**Q:** Lets try to find out who is the youngest customer.](#q-lets-try-to-find-out-who-is-the-youngest-customer)
 		* [**Q:** Is this the youngest customer ?](#q-is-this-the-youngest-customer)
-		* [**Q:** We are trying to position our online bookstore towards Fantasy and Sci-Fi theme, but we are also trying to provide good variety of books as well.](#q-we-are-trying-to-position-our-online-bookstore-towards-fantasy-and-sci-fi-theme-but-we-are-also-trying-to-provide-good-variety-of-books-as-well)
+		* [**Q:** We are trying to position our online Bookstore towards Fantasy and Sci-Fi theme, but we are also trying to provide good variety of Books as well.](#q-we-are-trying-to-position-our-online-Bookstore-towards-fantasy-and-sci-fi-theme-but-we-are-also-trying-to-provide-good-variety-of-Books-as-well)
 		* [**Q:** Are we making good profit from our focus categories ?](#q-are-we-making-good-profit-from-our-focus-categories)
 		* [**Q:** Do we provide enough variety ?](#q-do-we-provide-enough-variety)
-	* [Customers](#customers)
+	* [Customers](#Customers)
 		* [**Q:** Who is our customer ?](#q-who-is-our-customer)
-		* [**Q:** How many customers are male and how many are female?](#q-how-many-customers-are-male-and-how-many-are-female)
+		* [**Q:** How many Customers are male and how many are female?](#q-how-many-Customers-are-male-and-how-many-are-female)
 		* [**Q:** Query Top Buyers](#q-query-top-buyers)
 		* [**Q:**  But do the younger people read more than seniores ?](#q-but-do-the-younger-people-read-more-than-seniores)
 		* [**Q:** What are the reading preferencess of our top customer?](#q-what-are-the-reading-preferencess-of-our-top-customer)
@@ -53,9 +53,9 @@ MaritalStatuses: 5 rows
 
 ## Labs
 ### General 
- Your database is prepared and the sandbox data is loaded. Lets start by choosing the database we want to work on. In this case **bookstore** database.
+ Your database is prepared and the sandbox data is loaded. Lets start by choosing the database we want to work on. In this case **Bookstore** database.
 ```sql
-USE DATABASE bookstore;
+USE DATABASE Bookstore;
 ```
 
 We can check what tables we have.
@@ -65,11 +65,11 @@ SHOW TABLES;
 
 ### Books
 
-In this first part we will focus mainly on our main commodity - the books. We want to know what we offer to our customers and how can be improved.
+In this first part we will focus mainly on our main commodity - the Books. We want to know what we offer to our Customers and how can be improved.
 Lets start by answering our first question.
-#### **Q:**  How many books do we sell?
+#### **Q:**  How many Books do we sell?
 ```sql
-SELECT COUNT(*) FROM bookstore.books
+SELECT COUNT(*) FROM bookstore.Books
 ```
 
 ```
@@ -78,11 +78,11 @@ Total Books
 ```
 
 This was easy question 5000.
-**!** You can experiment replacing table name with **customers**, **transactions** etc.
+**!** You can experiment replacing table name with **Customers**, **transactions** etc.
 
 #### **Q:** Lets try to find out who is the youngest customer. 
 ```sql
-SELECT customer_nm,age FROM bookstore.customers ORDER BY age LIMIT 1;
+SELECT customer_nm,age FROM bookstore.Customers ORDER BY age LIMIT 1;
 ```
 
 The result should be somthing like this:
@@ -100,7 +100,7 @@ The result should be somthing like this:
 #### **Q:** Is this the youngest customer ?
 
 ```sql
-SELECT count(*) FROM bookstore.customers WHERE age=8;
+SELECT count(*) FROM bookstore.Customers WHERE age=8;
 ```
 
 The result should be somthing like this:
@@ -114,20 +114,20 @@ The result should be somthing like this:
 1 row in set (0.683 sec)
 
 ```
-Apparantly we have many customers at that age.
+Apparantly we have many Customers at that age.
 
 Lets try something harder.
 
-#### **Q:** We are trying to position our online bookstore towards Fantasy and Sci-Fi theme, but we are also trying to provide good variety of books as well.
+#### **Q:** We are trying to position our online Bookstore towards Fantasy and Sci-Fi theme, but we are also trying to provide good variety of Books as well.
 Did we achieve those goals?
 ```sql
-SELECT category, COUNT(*) as books FROM bookstore.books GROUP BY category;
+SELECT category, COUNT(*) as Books FROM bookstore.Books GROUP BY category;
 ```
 The **GROUP BY** statement instructs the database to grup the results by the first column
 The Result:
 ```
 +-------------------+-------+
-| category          | books |
+| category          | Books |
 +-------------------+-------+
 | Horror            |   394 |
 | Fantasy           |   889 |
@@ -141,11 +141,11 @@ The Result:
 | Humor             |   266 |
 +-------------------+-------+
 ```
-The most orders we have from the group of 49-58 years old.As you can tell we are well stoked on Fantasy and Sci-Fi books. As required by our target audience.
+The most orders we have from the group of 49-58 years old.As you can tell we are well stoked on Fantasy and Sci-Fi Books. As required by our target audience.
 Now lYou can try to use the **GROUP BY** with index for the same result
 
 ```sql
-SELECT category, COUNT(*) as books FROM bookstore.books GROUP BY 1;
+SELECT category, COUNT(*) as Books FROM bookstore.Books GROUP BY 1;
 ```
 
 Will yeald the same result.
@@ -156,7 +156,7 @@ Now lets try something more tangable. Money.
 Lets asume that the higher the price the more profit we make.
 
 ```sql
-SELECT category, AVG(cover_price) as projected_profitabilit FROM bookstore.books GROUP BY 1;
+SELECT category, AVG(cover_price) as projected_profitabilit FROM bookstore.Books GROUP BY 1;
 ```
 As you can see the the **COUNT(*)** is replaced by **AVG(cover_price)** this will return the average cover price grouped by first column i.e. in each book category.
 
@@ -177,7 +177,7 @@ As you can see the the **COUNT(*)** is replaced by **AVG(cover_price)** this wil
 +-------------------+------------------------+
 ```
 The most orders we have from the group of 49-58 years old.
-I looks like Fantasy and Sci-Fi books have good potential for profit, if they sell.
+I looks like Fantasy and Sci-Fi Books have good potential for profit, if they sell.
 Now lIt looks like the classics sell quite high maybe we should target selling more of those with a propper promotion. 
 #### **Q:** Do we provide enough variety ?
 
@@ -187,16 +187,16 @@ Let try more complex queries in the next section.
 
 ### Customers
 
-In this section we will try to identify who our customers are ? what are their preferences? how likely is for them to buy somethin out of their main focus.
+In this section we will try to identify who our Customers are ? what are their preferences? how likely is for them to buy somethin out of their main focus.
 
-Lets try to make a demographical profile of our customers.
+Lets try to make a demographical profile of our Customers.
 
 #### **Q:** Who is our customer ?
-The customers are stored in **bookstore.customers** 
+The Customers are stored in **bookstore.Customers** 
 ```sql
-select  * from bookstore.customers LIMIT 10;
+select  * from bookstore.Customers LIMIT 10;
 ```
-The query will give use what we have in this table The *LIMIT 10* statement will limit the results to  10, we only want to see a sample of the sata not the all 1.4 milion customers.
+The query will give use what we have in this table The *LIMIT 10* statement will limit the results to  10, we only want to see a sample of the sata not the all 1.4 milion Customers.
 ```
 +---------------------+-------------+----------------------------+-----+-----+-------+
 | customer_nm         | customer_id | customer_username_nm       | sex | age | ms_id |
@@ -216,7 +216,7 @@ The query will give use what we have in this table The *LIMIT 10* statement will
 The most orders we have from the group of 49-58 years old.It looks like we have the name, the sex, the age those we understand right away. There is also a column ms_id which is a bit Now lriptic to us. This column is a key to another table. This key is sometimes called  *FREIGN ID* or*FREIGN KEY*. 
 To get the actual text that stands behind this key we need to conect those tables. This is done by the **JOIN** statement.
 ```sql
-SELECT  * from bookstore.customers JOIN bookstore.maritalstatuses ON bookstore.customers.ms_id = bookstore.maritalstatuses.ms_id LIMIT 10;
+SELECT  * from bookstore.Customers JOIN bookstore.MaritalStatuses ON bookstore.Customers.ms_id = bookstore.MaritalStatuses.ms_id LIMIT 10;
 ```
 
 ```
@@ -236,20 +236,20 @@ SELECT  * from bookstore.customers JOIN bookstore.maritalstatuses ON bookstore.c
 +-----------------+-------------+--------------------------+-----+-----+-------+-------+---------------+
 ```
 The most orders we have from the group of 49-58 years old.It is clearly visible that we cannected those two tables by the column **ms_id** now we can exclude those columns because Now lhey have no meaning for us. 
-In addition we had to write the full name of those columns **bookstore.customers.ms_id** which becomes quite long. Especialy when we have to specify all the names of all the columns we want.
+In addition we had to write the full name of those columns **bookstore.Customers.ms_id** which becomes quite long. Especialy when we have to specify all the names of all the columns we want.
 
 Instead of typing 
 ```sql
 SELECT
-	bookstore.customers.customer_nm, 
-	bookstore.customers.customer_id, 
-	bookstore.customers.customer_username_nm, 
-	bookstore.customers.sex, 
-	bookstore.customers.age, 
-	bookstore.maritalstatuses.ms_type
-from bookstore.customers
-JOIN bookstore.maritalstatuses 
-ON bookstore.customers.ms_id = bookstore.maritalstatuses.ms_id 
+	bookstore.Customers.customer_nm, 
+	bookstore.Customers.customer_id, 
+	bookstore.Customers.customer_username_nm, 
+	bookstore.Customers.sex, 
+	bookstore.Customers.age, 
+	bookstore.MaritalStatuses.ms_type
+from bookstore.Customers
+JOIN bookstore.MaritalStatuses 
+ON bookstore.Customers.ms_id = bookstore.MaritalStatuses.ms_id 
 LIMIT 10;
 ```
 We can type only: 
@@ -261,12 +261,12 @@ SELECT
 	cust.sex, 
 	cust.age, 
 	ms.ms_type
-from bookstore.customers cust
-JOIN bookstore.maritalstatuses ms
+from bookstore.Customers cust
+JOIN bookstore.MaritalStatuses ms
 ON cust.ms_id = ms.ms_id 
 LIMIT 10;
 ```
-Both will return identical result. The short names **cust** and **ms** are called aliases and replace reference to  **bookstore.customers** and **bookstore.maritalstatuses**
+Both will return identical result. The short names **cust** and **ms** are called aliases and replace reference to  **bookstore.Customers** and **bookstore.MaritalStatuses**
 
 ```
 +--------------------+-------------+--------------------------+-----+-----+---------------+
@@ -285,13 +285,13 @@ Both will return identical result. The short names **cust** and **ms** are calle
 +--------------------+-------------+--------------------------+-----+-----+---------------+
 ```
 This is sampple of individual users. We want to focus on the bigger picture.
-#### **Q:** How many customers are male and how many are female?
+#### **Q:** How many Customers are male and how many are female?
 
 ```sql
 SELECT
 	cust.sex, 
 	count(*)
-from bookstore.customers cust
+from bookstore.Customers cust
 GROUP BY 1;
 ```
 ```
@@ -302,13 +302,13 @@ GROUP BY 1;
 | F   |   729095 |
 +-----+----------+
 ```
-We can tell that the we have slightly more female customers, but not by much.
+We can tell that the we have slightly more female Customers, but not by much.
 
 ```sql
 SELECT
 	cust.age, 
 	count(*)
-from bookstore.customers cust
+from bookstore.Customers cust
 GROUP BY 1
 ORDER BY cust.age;
 ```
@@ -413,15 +413,15 @@ ORDER BY cust.age;
 | 102 |       55 |
 +-----+----------+
 ```
-The most orders we have from the group of 49-58 years old.It is clear that our customers are mostly between 25 and 65 years old with clear peak around age of 55. 
+The most orders we have from the group of 49-58 years old.It is clear that our Customers are mostly between 25 and 65 years old with clear peak around age of 55. 
 
 #### **Q:** How are they disctriburted by maritial statsus ?
 ```sql 
 SELECT
 	ms.ms_type,
 	count(*)
-from bookstore.customers cust
-JOIN bookstore.maritalstatuses ms
+from bookstore.Customers cust
+JOIN bookstore.MaritalStatuses ms
 ON cust.ms_id = ms.ms_id 
 GROUP BY ms.ms_type
 LIMIT 10;
@@ -438,7 +438,7 @@ As you might noticed we skipped the **JOIN** untill now because we only need thi
 | Separated     |    22475 |
 +---------------+----------+
 ```
-As you can the customers are almoust evenly distributed between single and married.
+As you can the Customers are almoust evenly distributed between single and married.
 Those we demographics analisys only. 
 But we want to know more about their bying habbits.
 How much they buy?
@@ -456,8 +456,8 @@ SELECT
     cust.age,
     ms.ms_type
 FROM transactions as t 
-INNER JOIN bookstore.customers cust ON cust.customer_id = t.customer_id
-INNER JOIN bookstore.maritalstatuses ms ON ms.ms_id = cust.ms_id
+INNER JOIN bookstore.Customers cust ON cust.customer_id = t.customer_id
+INNER JOIN bookstore.MaritalStatuses ms ON ms.ms_id = cust.ms_id
 GROUP BY  
     t.customer_id,
     cust.customer_nm,
@@ -495,8 +495,8 @@ SELECT
     count(t.order_id) 'Total Orders',
     cust.age
 FROM transactions as t 
-INNER JOIN bookstore.customers cust ON cust.customer_id = t.customer_id
-INNER JOIN bookstore.maritalstatuses ms ON ms.ms_id = cust.ms_id
+INNER JOIN bookstore.Customers cust ON cust.customer_id = t.customer_id
+INNER JOIN bookstore.MaritalStatuses ms ON ms.ms_id = cust.ms_id
 GROUP BY  
     cust.age
 ORDER BY 'Total Orders' desc
@@ -521,7 +521,7 @@ Result:
 ```
 The most orders we have from the group of 49-58 years old.
 
-Now lets focus on our top customers and try to profile them in order to answer the following question:
+Now lets focus on our top Customers and try to profile them in order to answer the following question:
 
 #### **Q:** What are the reading preferencess of our top customer?
 ```sql
@@ -530,8 +530,8 @@ SELECT
     b.category, 
     SUM(discounted_price) disc_price 
 FROM bookstore.transactions AS t  
-INNER JOIN customers cust ON cust.customer_id = t.customer_id 
-INNER JOIN books b ON b.book_id = t.book_id 
+INNER JOIN Customers cust ON cust.customer_id = t.customer_id 
+INNER JOIN Books b ON b.book_id = t.book_id 
 WHERE cust.customer_id=13
 GROUP BY  cust.customer_id,cust.customer_nm,b.category ORDER BY cust.customer_id;
 ```
