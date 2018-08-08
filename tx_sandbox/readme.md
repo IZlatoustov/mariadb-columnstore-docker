@@ -18,6 +18,11 @@ Navigate to [[http://localhost:8080/?server=server&username=sandbox&db=bookstore
 Default password is:
 ```highlyillogical```
 
+Alterntively you can access the database from commandline:
+```sh
+mysql -h127.0.0.1 -uzeppelin_user -pzeppelin_pass -D bookstore
+```
+
 ## Build and run using docker
 
 ### Build
