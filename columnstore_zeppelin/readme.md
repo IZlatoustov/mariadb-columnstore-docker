@@ -2,7 +2,8 @@
  
 ## Building
 - Install docker: https://docs.docker.com/engine/installation/
-- Run docker build to create the docker image, feel free to choose your own container name other than mariadb/columnstore:
+
+The space requirement for the docker images is around 4GB
 
 Make sure you are in columnstore_zeppelin folder
 ```sh
